@@ -1,0 +1,2870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>JIJE · Jornada Internacional de Jovenes Emprendedores</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Lato', 'sans-serif'],
+            display: ['Lato', 'sans-serif'],
+          },
+          colors: {
+            ink: {
+              DEFAULT: '#0D0D0D',
+              soft: '#1A1A1A',
+              muted: '#666666',
+              subtle: '#999999',
+            },
+            surface: {
+              DEFAULT: '#FFFFFF',
+              alt: '#F7F7F8',
+              border: '#E6E6E8',
+            },
+            accent: {
+              magenta: '#E62987',
+              lime: '#C6D300',
+              orange: '#EC701D',
+              cyan: '#69C5DC',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    html {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      color: #0D0D0D;
+      font-family: 'Lato', sans-serif;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: block;
+    }
+
+    /* Aplicación a pantalla completa en escritorio y dispositivos móviles */
+    #app-shell {
+      width: 100%;
+      max-width: none;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 100vh;
+      max-height: none;
+      margin: 0;
+      background: #FFFFFF;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
+    }
+
+    /* Navegación inferior en celulares */
+    #bottom-nav {
+      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    }
+
+    /* En escritorio, la navegación pasa a una columna lateral */
+    @media (min-width: 768px) {
+      #app-shell {
+        flex-direction: row;
+      }
+<div id="jije-login-screen" class="fixed inset-0 z-50 bg-white flex flex-col justify-center items-center p-6 overflow-y-auto">
+  <div class="w-full max-w-sm animate-pop">
+    <!-- Puntos de identidad visual JIJE -->
+    <div class="flex items-center gap-2 mb-6">
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-magenta"></span>
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-lime"></span>
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-orange"></span>
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-cyan"></span>
+    </div>
+
+    <h1 class="text-3xl font-black text-ink tracking-tight mb-1">Bienvenido a JIJE</h1>
+    <p class="text-sm text-ink-muted mb-8">Jornada Internacional de Jóvenes Emprendedores</p>
+
+    <!-- Formulario de acceso -->
+    <form id="jije-login-form" class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Tu Nombre</label>
+        <input 
+          type="text" 
+          id="jije-user-name" 
+          required 
+          placeholder="Ej. Sofía Martínez"
+          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Correo electrónico</label>
+        <input 
+          type="email" 
+          id="jije-user-email" 
+          required 
+          placeholder="emprendedor@ejemplo.com"
+          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Contraseña</label>
+        <input 
+          type="password" 
+          id="jije-user-pass" 
+          required 
+          minlength="4"
+          placeholder="••••••••"
+          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors"
+        />
+      </div>
+
+      <p id="jije-login-error" class="hidden text-xs font-bold text-accent-magenta"></p>
+
+      <button 
+        type="submit" 
+        class="btn-press w-full py-3.5 rounded-xl bg-ink text-white font-bold text-sm hover:bg-ink-soft transition-colors mt-2"
+      >
+        Ingresar a la Jornada
+      </button>
+    </form>
+
+    <div class="mt-6 pt-6 border-t border-surface-border text-center">
+      <button type="button" id="jije-guest-btn" class="text-xs font-bold text-ink-muted hover:text-ink underline">
+        Continuar como invitado (Modo Demo)
+      </button>
+    </div>
+  </div>
+</div>
+      #main-viewport {
+        min-width: 0;
+        height: 100%;
+        padding-bottom: 0;
+      }
+
+      #bottom-nav {
+        position: relative;
+        inset: auto;
+        order: -1;
+        flex: 0 0 240px;
+        width: 240px;
+        height: 100%;
+        padding: 2rem 1rem;
+        border-top: 0;
+        border-right: 1px solid #E6E6E8;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background: #FFFFFF;
+      }
+
+      #bottom-nav > div {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      #bottom-nav .nav-btn {
+        width: 100%;
+        min-height: 52px;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.85rem;
+        padding: 0.65rem 0.8rem;
+        text-align: left;
+      }
+
+      #bottom-nav .nav-icon-wrap {
+        flex: 0 0 auto;
+      }
+
+      #bottom-nav .nav-btn span:not(.absolute) {
+        margin-top: 0;
+        font-size: 0.875rem;
+        letter-spacing: 0;
+      }
+
+      #bottom-nav .nav-btn > span.absolute {
+        top: 0.65rem;
+        right: 0.65rem;
+      }
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Superficies minimalistas */
+    .minimal-card {
+      background: #FFFFFF;
+      border: 1px solid #E6E6E8;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+    .minimal-card-alt {
+      background: #F7F7F8;
+      border: 1px solid #EBEBED;
+    }
+
+    /* Animaciones limpias */
+    @keyframes popBounce {
+      0% { transform: scale(0.82); opacity: 0; }
+      65% { transform: scale(1.04); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popBounce 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes shakeError {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-7px); }
+      40%, 80% { transform: translateX(7px); }
+    }
+    .animate-shake {
+      animation: shakeError 0.38s ease-in-out;
+    }
+
+    @keyframes floatXp {
+      0% { transform: translateY(10px) scale(0.92); opacity: 0; }
+      18% { transform: translateY(0) scale(1); opacity: 1; }
+      82% { transform: translateY(-14px) scale(1); opacity: 1; }
+      100% { transform: translateY(-28px) scale(0.96); opacity: 0; }
+    }
+    .animate-xp-toast {
+      animation: floatXp 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      75% { transform: scale(1.9); opacity: 0; }
+      100% { transform: scale(1.9); opacity: 0; }
+    }
+    .live-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background-color: #E62987;
+      animation: pulseRing 1.6s infinite;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(260px) rotate(540deg); opacity: 0; }
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 1.5px;
+      animation: confettiFall 2.3s ease-out forwards;
+    }
+
+    .btn-press {
+      transition: transform 0.14s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-press:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-shell">
+
+<!-- INICIO LOGIN JIJE -->
+<div id="jije-login-screen" class="fixed inset-0 z-50 bg-white flex flex-col justify-center items-center p-6 overflow-y-auto">
+  <div class="w-full max-w-sm animate-pop">
+    <div class="flex items-center gap-2 mb-6">
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-magenta"></span>
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-lime"></span>
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-orange"></span>
+      <span class="w-3.5 h-3.5 rounded-full bg-accent-cyan"></span>
+    </div>
+
+    <h1 class="text-3xl font-black text-ink tracking-tight mb-1">Bienvenido a JIJE</h1>
+    <p class="text-sm text-ink-muted mb-8">Jornada Internacional de Jóvenes Emprendedores</p>
+
+    <form id="jije-login-form" class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Tu Nombre</label>
+        <input type="text" id="jije-user-name" required placeholder="Ej. Sofía Martínez"
+          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Correo electrónico</label>
+        <input type="email" id="jije-user-email" required placeholder="emprendedor@ejemplo.com"
+          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Contraseña</label>
+        <input type="password" id="jije-user-pass" required minlength="4" placeholder="••••••••"
+          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors" />
+      </div>
+
+      <p id="jije-login-error" class="hidden text-xs font-bold text-accent-magenta"></p>
+
+      <button type="submit" class="btn-press w-full py-3.5 rounded-xl bg-ink text-white font-bold text-sm hover:bg-ink-soft transition-colors mt-2">
+        Ingresar a la Jornada
+      </button>
+    </form>
+
+    <div class="mt-6 pt-6 border-t border-surface-border text-center">
+      <button type="button" id="jije-guest-btn" class="text-xs font-bold text-ink-muted hover:text-ink underline">
+        Continuar como invitado (Modo Demo)
+      </button>
+    </div>
+  </div>
+</div>
+<!-- FIN LOGIN JIJE -->
+    <!-- Toast flotante de XP y notificaciones -->
+    <div id="xp-toast-container" class="pointer-events-none fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2"></div>
+
+    <!-- Contenedor principal dinámico de pantallas -->
+    <main id="main-viewport" class="flex-1 overflow-y-auto no-scrollbar pb-24 relative bg-white">
+      <!-- Renderizado por JS -->
+    </main>
+
+    <!-- Barra de navegación inferior (5 pestañas: Streaming, Proyectos, Desafíos, JIJE, Perfil) -->
+    <nav id="bottom-nav" class="absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-surface-border px-2 pt-2 pb-3 sm:pb-4 z-30">
+      <div class="grid grid-cols-5 gap-1 items-center">
+        <!-- 1. Streaming (Inicio) -->
+        <button onclick="switchTab('streaming')" data-tab="streaming" class="nav-btn flex flex-col items-center justify-center py-1 rounded-2xl transition-all relative">
+          <span class="absolute top-1.5 right-4 w-2 h-2 rounded-full bg-accent-magenta"></span>
+          <div class="nav-icon-wrap p-1.5 rounded-xl transition-all">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <span class="text-[10px] font-bold mt-0.5 tracking-tight">Streaming</span>
+        </button>
+
+        <!-- 2. Proyectos -->
+        <button onclick="switchTab('proyectos')" data-tab="proyectos" class="nav-btn flex flex-col items-center justify-center py-1 rounded-2xl transition-all">
+          <div class="nav-icon-wrap p-1.5 rounded-xl transition-all">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+          </div>
+          <span class="text-[10px] font-bold mt-0.5 tracking-tight">Proyectos</span>
+        </button>
+
+        <!-- 3. Desafíos -->
+        <button onclick="switchTab('desafios')" data-tab="desafios" class="nav-btn flex flex-col items-center justify-center py-1 rounded-2xl transition-all relative">
+          <span id="nav-badge-desafios" class="hidden absolute top-1 right-4 w-2.5 h-2.5 rounded-full bg-accent-orange border-2 border-white"></span>
+          <div class="nav-icon-wrap p-1.5 rounded-xl transition-all">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+          </div>
+          <span class="text-[10px] font-bold mt-0.5 tracking-tight">Desafíos</span>
+        </button>
+
+        <!-- 4. JIJE (Programa e info general) -->
+        <button onclick="switchTab('jije')" data-tab="jije" class="nav-btn flex flex-col items-center justify-center py-1 rounded-2xl transition-all">
+          <div class="nav-icon-wrap p-1.5 rounded-xl transition-all">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <span class="text-[10px] font-bold mt-0.5 tracking-tight">JIJE</span>
+        </button>
+
+        <!-- 5. Perfil -->
+        <button onclick="switchTab('perfil')" data-tab="perfil" class="nav-btn flex flex-col items-center justify-center py-1 rounded-2xl transition-all">
+          <div class="nav-icon-wrap p-1.5 rounded-xl transition-all">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="text-[10px] font-bold mt-0.5 tracking-tight">Perfil</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Modal: Vista de Proyecto (Lectura, Trivia y PIN de Stand) -->
+    <div id="project-modal" class="hidden absolute inset-0 z-40 bg-white flex flex-col">
+      <!-- Barra superior sticky con progreso de lectura -->
+      <div class="bg-white/95 backdrop-blur-md border-b border-surface-border z-20">
+        <div class="flex items-center justify-between px-4 py-3">
+          <button onclick="closeProjectModal()" class="btn-press flex items-center gap-1.5 text-xs font-bold text-ink bg-surface-alt hover:bg-neutral-200/70 px-3 py-1.5 rounded-xl border border-surface-border">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Volver
+          </button>
+          <div id="modal-project-stand-badge" class="text-[11px] font-black px-2.5 py-1 rounded-lg bg-ink text-white tracking-wider">
+            STAND A-01
+          </div>
+          <div id="modal-read-timer-pill" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-surface-alt text-ink-muted border border-surface-border">
+            Leyendo...
+          </div>
+        </div>
+        <!-- Barra de progreso de lectura con los 4 acentos -->
+        <div class="w-full h-1.5 bg-surface-alt overflow-hidden">
+          <div id="reading-progress-bar" class="h-full transition-all duration-150" style="width: 0%; background: linear-gradient(90deg, #E62987 0%, #EC701D 35%, #C6D300 70%, #69C5DC 100%);"></div>
+        </div>
+      </div>
+
+      <!-- Contenido scrolleable del proyecto -->
+      <div id="project-modal-scroll" class="flex-1 overflow-y-auto no-scrollbar p-5 pb-28 space-y-6 bg-white">
+        <!-- Se llena dinámicamente -->
+      </div>
+    </div>
+
+    <!-- Modal: Teclado Numérico para PIN del Stand -->
+    <div id="pin-modal" class="hidden absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+      <div id="pin-modal-card" class="w-full max-w-sm bg-white border border-surface-border rounded-3xl p-6 shadow-2xl animate-pop">
+        <div class="flex items-center justify-between mb-3">
+          <span id="pin-stand-label" class="text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg bg-ink text-white">STAND A-01</span>
+          <button onclick="closePinModal()" class="p-1.5 rounded-full bg-surface-alt text-ink-muted hover:text-ink">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <h3 class="text-xl font-black text-ink tracking-tight">Validar conexión en stand</h3>
+        <p class="text-xs text-ink-muted mt-1 leading-relaxed">Solicitá al equipo emprendedor el PIN de 4 dígitos de su stand para desbloquear sus datos de contacto y sumar XP.</p>
+
+        <!-- Pista para modo demo -->
+        <div class="mt-3 px-3 py-2 rounded-xl bg-surface-alt border border-surface-border flex items-center justify-between">
+          <span class="text-[11px] text-ink-muted font-bold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-accent-orange"></span>
+            PIN Demo del stand:
+          </span>
+          <span id="pin-demo-hint" class="font-mono text-xs font-black text-ink tracking-widest bg-white px-2.5 py-0.5 rounded border border-surface-border">0000</span>
+        </div>
+
+        <!-- Visor de 4 dígitos -->
+        <div id="pin-display-boxes" class="grid grid-cols-4 gap-3 my-5">
+          <div class="pin-box h-14 rounded-2xl bg-surface-alt border-2 border-surface-border flex items-center justify-center text-2xl font-black text-ink"></div>
+          <div class="pin-box h-14 rounded-2xl bg-surface-alt border-2 border-surface-border flex items-center justify-center text-2xl font-black text-ink"></div>
+          <div class="pin-box h-14 rounded-2xl bg-surface-alt border-2 border-surface-border flex items-center justify-center text-2xl font-black text-ink"></div>
+          <div class="pin-box h-14 rounded-2xl bg-surface-alt border-2 border-surface-border flex items-center justify-center text-2xl font-black text-ink"></div>
+        </div>
+
+        <p id="pin-error-msg" class="text-center text-xs font-bold text-accent-magenta h-4 mb-2"></p>
+
+        <!-- Teclado numérico minimalista -->
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="pressPinDigit('1')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">1</button>
+          <button onclick="pressPinDigit('2')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">2</button>
+          <button onclick="pressPinDigit('3')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">3</button>
+          <button onclick="pressPinDigit('4')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">4</button>
+          <button onclick="pressPinDigit('5')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">5</button>
+          <button onclick="pressPinDigit('6')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">6</button>
+          <button onclick="pressPinDigit('7')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">7</button>
+          <button onclick="pressPinDigit('8')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">8</button>
+          <button onclick="pressPinDigit('9')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">9</button>
+          <button onclick="clearPinInput()" class="btn-press h-12 rounded-2xl bg-white hover:bg-surface-alt border border-surface-border text-[11px] font-black uppercase tracking-wider text-ink-muted">Limpiar</button>
+          <button onclick="pressPinDigit('0')" class="btn-press h-12 rounded-2xl bg-surface-alt hover:bg-neutral-200/70 border border-surface-border text-lg font-black text-ink">0</button>
+          <button onclick="backspacePinDigit()" class="btn-press h-12 rounded-2xl bg-white hover:bg-surface-alt border border-surface-border flex items-center justify-center text-ink">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Celebración (Subida de Nivel / Desafío Completado) -->
+    <div id="celebration-modal" class="hidden absolute inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-6">
+      <div id="confetti-layer" class="pointer-events-none absolute inset-0 overflow-hidden"></div>
+      <div class="relative w-full max-w-sm bg-white border-2 border-ink rounded-3xl p-7 text-center shadow-2xl animate-pop">
+        <div class="flex justify-center gap-1.5 mb-4">
+          <span class="w-3 h-3 rounded-full bg-accent-magenta"></span>
+          <span class="w-3 h-3 rounded-full bg-accent-lime"></span>
+          <span class="w-3 h-3 rounded-full bg-accent-orange"></span>
+          <span class="w-3 h-3 rounded-full bg-accent-cyan"></span>
+        </div>
+        <div id="celebration-icon" class="w-16 h-16 mx-auto rounded-2xl bg-ink text-white flex items-center justify-center mb-4">
+          <!-- Icono SVG -->
+        </div>
+        <span id="celebration-badge-label" class="inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-accent-lime text-ink mb-2">
+          ¡NUEVO HITO!
+        </span>
+        <h2 id="celebration-title" class="text-2xl font-black text-ink tracking-tight">¡Subiste al Nivel 9!</h2>
+        <p id="celebration-desc" class="text-xs text-ink-muted mt-2 leading-relaxed">Seguís conectando con el ecosistema emprendedor y tecnológico de JIJE.</p>
+        <button onclick="closeCelebrationModal()" class="btn-press mt-6 w-full py-3.5 rounded-2xl bg-ink text-white font-bold text-sm hover:bg-ink-soft">
+          Continuar explorando
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal: Confirmación de reinicio de demo -->
+    <div id="reset-modal" class="hidden absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6">
+      <div class="w-full max-w-sm bg-white border border-surface-border rounded-3xl p-6 text-center animate-pop shadow-2xl">
+        <h3 class="text-lg font-black text-ink">Configurar estado de la demo</h3>
+        <p class="text-xs text-ink-muted mt-2 leading-relaxed">Elegí si querés iniciar desde cero (0 proyectos leídos, Nivel 1) o restaurar la actividad precargada de JIJE.</p>
+        <div class="space-y-2.5 mt-5">
+          <button onclick="resetDemoState('fresh')" class="btn-press w-full py-3 rounded-2xl bg-accent-magenta text-white font-bold text-xs">
+            Empezar desde cero (Nivel 1)
+          </button>
+          <button onclick="resetDemoState('seeded')" class="btn-press w-full py-3 rounded-2xl bg-ink text-white font-bold text-xs">
+            Restaurar actividad precargada
+          </button>
+          <button onclick="closeResetModal()" class="btn-press w-full py-2.5 rounded-2xl bg-surface-alt text-ink-muted font-bold text-xs">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. DATOS SIMULADOS: EMPRENDEDURISMO Y TECNOLOGÍA (26 PROYECTOS FICTICIOS)
+    // =========================================================================
+
+    const CATEGORIES = [
+      { id: 'Inteligencia Artificial', color: '#E62987', textOnBg: '#FFFFFF', short: 'IA & Datos' },
+      { id: 'Fintech & Blockchain', color: '#69C5DC', textOnBg: '#0D0D0D', short: 'Fintech' },
+      { id: 'Cleantech & Sustentabilidad', color: '#C6D300', textOnBg: '#0D0D0D', short: 'Cleantech' },
+      { id: 'Healthtech & Biotech', color: '#EC701D', textOnBg: '#FFFFFF', short: 'Healthtech' },
+      { id: 'SaaS & Productividad', color: '#0D0D0D', textOnBg: '#FFFFFF', short: 'SaaS B2B' },
+      { id: 'Edtech & Futuro del Trabajo', color: '#E62987', textOnBg: '#FFFFFF', short: 'Edtech' }
+    ];
+
+    const PROJECTS_DATA = [
+      {
+        id: 'p01',
+        stand: 'A-01',
+        pin: '4821',
+        category: 'Inteligencia Artificial',
+        title: 'SynthetixQA: Agentes Autónomos de Testing',
+        team: 'Kinetix AI Labs',
+        stage: 'Seed · 6 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Plataforma de agentes de IA que exploran aplicaciones web y móviles simulando usuarios reales para detectar fallos de UX antes de cada despliegue.',
+        paragraphs: [
+          'Los equipos de desarrollo pierden hasta un 35% de su sprint manteniendo pruebas automatizadas frágiles que se rompen ante cualquier cambio visual.',
+          'SynthetixQA entrena modelos multimodales capaces de navegar flujos complejos, interpretar intenciones de negocio y reportar regresiones visuales con videos reproducibles.',
+          'Actualmente trabajan con 14 startups SaaS de Latinoamérica reduciendo en un 60% los incidentes críticos en producción.'
+        ],
+        contact: { lead: 'Mateo Valenzuela', role: 'Co-Founder & CTO', email: 'mateo@kinetixai.demo', handle: 'linkedin.com/in/mateovalenzuela-demo' },
+        trivia: [
+          { q: '¿Qué problema principal resuelve SynthetixQA para los equipos de desarrollo?', options: ['Detecta fallos de UX antes del despliegue con agentes autónomos', 'Diseña logotipos automáticamente', 'Gestiona nóminas salariales'], answer: 0 },
+          { q: '¿En qué porcentaje redujeron los incidentes críticos en sus clientes?', options: ['15%', '60%', '95%'], answer: 1 }
+        ]
+      },
+      {
+        id: 'p02',
+        stand: 'A-02',
+        pin: '7390',
+        category: 'Fintech & Blockchain',
+        title: 'NexoPay: Tesorería Transfronteriza para Pymes',
+        team: 'Caudal FinTech',
+        stage: 'Pre-Serie A · 11 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 120,
+        pinXp: 180,
+        summary: 'Infraestructura de pagos B2B que liquida facturas internacionales en segundos utilizando stablecoins reguladas y rieles bancarios locales.',
+        paragraphs: [
+          'Exportar servicios o insumos desde la región implica demoras de hasta 72 horas y comisiones bancarias que erosionan los márgenes de las pequeñas empresas.',
+          'NexoPay abstrae toda la complejidad criptográfica: el importador paga en su moneda local y el proveedor recibe liquidez inmediata con conciliación contable automática.',
+          'Su motor de cumplimiento normativo (KYB) verifica contrapartes en tiempo real, permitiendo operar en 9 países con trazabilidad auditada.',
+          'En el stand realizan una demostración en vivo de liquidación instantánea entre dos cuentas corporativas.'
+        ],
+        contact: { lead: 'Valeria Quiroga', role: 'CEO & Co-Founder', email: 'valeria@caudalfintech.demo', handle: 'linkedin.com/in/valeriaquiroga-demo' },
+        trivia: [
+          { q: '¿A quién está dirigida principalmente la infraestructura de NexoPay?', options: ['A Pymes que realizan pagos B2B internacionales', 'A videojuegos móviles', 'A venta minorista de indumentaria'], answer: 0 },
+          { q: '¿En cuántos países permite operar actualmente su motor de cumplimiento?', options: ['2 países', '9 países', '30 países'], answer: 1 }
+        ]
+      },
+      {
+        id: 'p03',
+        stand: 'A-03',
+        pin: '1954',
+        category: 'Cleantech & Sustentabilidad',
+        title: 'GridPulse: Micro-redes Solares Inteligentes',
+        team: 'Voltaica Energía',
+        stage: 'Seed · 8 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Hardware IoT y software predictivo que permite a parques industriales compartir excedentes de energía solar entre naves vecinas.',
+        paragraphs: [
+          'Muchas plantas industriales generan energía solar los fines de semana sin aprovecharla al máximo, mientras fábricas contiguas enfrentan picos de demanda costosos.',
+          'GridPulse instala medidores bidireccionales inteligentes que balancean cargas en milisegundos y liquidan créditos energéticos automatizados entre empresas del mismo predio.',
+          'El sistema logra un ahorro promedio del 24% en la factura eléctrica industrial sin requerir grandes bancos de baterías.'
+        ],
+        contact: { lead: 'Julián Peralta', role: 'Co-Founder & Hardware Lead', email: 'julian@voltaica.demo', handle: 'linkedin.com/in/julianperalta-demo' },
+        trivia: [
+          { q: '¿Qué porcentaje promedio de ahorro eléctrico logra GridPulse?', options: ['10%', '24%', '50%'], answer: 1 },
+          { q: '¿Dónde se instalan sus medidores inteligentes?', options: ['En parques industriales para compartir excedentes', 'En automóviles particulares', 'En alumbrado rural aislado'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p04',
+        stand: 'A-04',
+        pin: '6042',
+        category: 'Healthtech & Biotech',
+        title: 'BioScan Pocket: Diagnóstico Óptico Rápido',
+        team: 'LumenBio Diagnostics',
+        stage: 'Pre-Seed · 5 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 125,
+        pinXp: 185,
+        summary: 'Dispositivo portátil acoplable al smartphone que detecta biomarcadores inflamatorios en 8 minutos mediante microfluídica y visión artificial.',
+        paragraphs: [
+          'En centros de atención primaria alejados de laboratorios centrales, esperar días por un análisis básico retrasa tratamientos oportunos.',
+          'BioScan Pocket utiliza cartuchos descartables de papel microfluídico que cambian de espectro cromático ante una microgota de muestra.',
+          'La aplicación móvil calibra la iluminación ambiental y cuantifica resultados con una correlación del 97% frente a equipos de laboratorio estándar.',
+          'El proyecto fue validado junto a dos hospitales universitarios y busca aliados para escalar su manufactura certificada.'
+        ],
+        contact: { lead: 'Dra. Camila Soria', role: 'CSO & Co-Founder', email: 'camila@lumenbio.demo', handle: 'linkedin.com/in/camilasoria-demo' },
+        trivia: [
+          { q: '¿En cuánto tiempo entrega resultados BioScan Pocket?', options: ['8 minutos', '2 horas', '24 horas'], answer: 0 },
+          { q: '¿Qué correlación alcanzó frente a equipos de laboratorio estándar?', options: ['80%', '97%', '100%'], answer: 1 }
+        ]
+      },
+      {
+        id: 'p05',
+        stand: 'B-01',
+        pin: '8317',
+        category: 'SaaS & Productividad',
+        title: 'FlowLedger: Copiloto Operativo para Estudios',
+        team: 'Métrica Studio Tech',
+        stage: 'Bootstrapped · 7 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'ERP ligero diseñado para agencias creativas, estudios de arquitectura y consultoras tecnológicas que unifica cotizaciones, horas y rentabilidad.',
+        paragraphs: [
+          'Las firmas de servicios profesionales suelen gestionar sus proyectos en cinco herramientas desconectadas, descubriendo recién al cierre si un cliente fue rentable.',
+          'FlowLedger conecta el alcance presupuestado con el registro real de tareas y alertas tempranas de desvío de margen.',
+          'Con más de 320 estudios activos en 6 países, la plataforma destaca por una interfaz limpia que se configura en menos de 15 minutos.'
+        ],
+        contact: { lead: 'Diego Bustamante', role: 'Founder & Product Lead', email: 'diego@flowledger.demo', handle: 'linkedin.com/in/diegobustamante-demo' },
+        trivia: [
+          { q: '¿Para qué tipo de organizaciones está diseñado FlowLedger?', options: ['Agencias, estudios y consultoras de servicios', 'Supermercados minoristas', 'Aerolíneas comerciales'], answer: 0 },
+          { q: '¿Cuántos estudios activos utilizan ya la plataforma?', options: ['Más de 320', '25', '1,500'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p06',
+        stand: 'B-02',
+        pin: '3109',
+        category: 'Edtech & Futuro del Trabajo',
+        title: 'SkillForge: Simuladores Laborales con IA',
+        team: 'RutaTalento',
+        stage: 'Seed · 9 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Entornos prácticos donde jóvenes profesionales resuelven crisis reales de producto, ventas o soporte antes de su primera entrevista técnica.',
+        paragraphs: [
+          'Los currículums tradicionales no reflejan cómo piensa ni cómo colabora una persona bajo presión real.',
+          'SkillForge crea escenarios interactivos de 45 minutos con clientes simulados, métricas cambiantes y compañeros virtuales que evalúan criterio y comunicación.',
+          'Las empresas contratantes reciben un mapa de competencias verificadas que acelera un 50% sus procesos de selección junior.'
+        ],
+        contact: { lead: 'Luciana Méndez', role: 'Co-Founder & COO', email: 'luciana@rutatalento.demo', handle: 'linkedin.com/in/lucianamendez-demo' },
+        trivia: [
+          { q: '¿Cuánto duran los escenarios interactivos de simulación?', options: ['45 minutos', '5 horas', '10 minutos'], answer: 0 },
+          { q: '¿En cuánto aceleran los procesos de selección junior?', options: ['10%', '50%', '90%'], answer: 1 }
+        ]
+      },
+      {
+        id: 'p07',
+        stand: 'B-03',
+        pin: '5528',
+        category: 'Inteligencia Artificial',
+        title: 'AgroSense Vision: Monitoreo Satelital y Drones',
+        team: 'Surco Data',
+        stage: 'Seed · 10 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 120,
+        pinXp: 180,
+        summary: 'Sistema de visión por computadora que detecta estrés hídrico y plagas tempranas en cultivos extensivos reduciendo el uso de agroquímicos.',
+        paragraphs: [
+          'La aplicación uniforme de insumos agrícolas encarece la producción y genera impacto ambiental innecesario en lotes heterogéneos.',
+          'AgroSense Vision procesa imágenes multiespectrales para generar mapas de prescripción variable compatibles con maquinaria agrícola estándar.',
+          'Los productores logran reducir hasta un 42% la aplicación de herbicidas aplicando tratamientos únicamente en los focos detectados.',
+          'En el stand exhiben su visor 3D interactivo de parcelas monitoreadas en tiempo real.'
+        ],
+        contact: { lead: 'Tomás Ferreyra', role: 'CEO & Ing. Agrónomo', email: 'tomas@surcodata.demo', handle: 'linkedin.com/in/tomasferreyra-demo' },
+        trivia: [
+          { q: '¿Qué porcentaje de reducción en herbicidas logran los productores?', options: ['42%', '12%', '75%'], answer: 0 },
+          { q: '¿Qué tipo de imágenes procesa la plataforma?', options: ['Imágenes multiespectrales', 'Radiografías médicas', 'Fotos submarinas'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p08',
+        stand: 'B-04',
+        pin: '9412',
+        category: 'Cleantech & Sustentabilidad',
+        title: 'CircularPack: Logística de Envases Reutilizables',
+        team: 'CicloCero',
+        stage: 'Pre-Seed · 6 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Red de empaques inteligentes con chips NFC para e-commerce que reemplazan cajas de cartón descartables por envases retornables de 80 usos.',
+        paragraphs: [
+          'El comercio electrónico genera millones de toneladas anuales de cartón y film plástico de un solo uso.',
+          'CircularPack provee bolsas y cajas plegables resistentes con trazabilidad NFC: al recibir su pedido, el comprador devuelve el envase en puntos aliados o al repartidor.',
+          'Cada ciclo de retorno otorga beneficios en comercios adheridos y reporta métricas auditables de huella de carbono evitada.'
+        ],
+        contact: { lead: 'Sofía Alarcón', role: 'Co-Founder & Operaciones', email: 'sofia@ciclocero.demo', handle: 'linkedin.com/in/sofiaalarcon-demo' },
+        trivia: [
+          { q: '¿Cuántos usos soporta cada envase retornable de CircularPack?', options: ['10 usos', '80 usos', '200 usos'], answer: 1 },
+          { q: '¿Qué tecnología integran los envases para su trazabilidad?', options: ['Chips NFC', 'GPS satelital pesado', 'Código morse'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p09',
+        stand: 'C-01',
+        pin: '2763',
+        category: 'Fintech & Blockchain',
+        title: 'CreditSeed: Scoring Alternativo para Emprendedores',
+        team: 'Impulso Capital Tech',
+        stage: 'Seed · 8 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Motor de evaluación crediticia que analiza flujos de facturación digital y recurrencia de clientes para otorgar capital de trabajo en 24 horas.',
+        paragraphs: [
+          'Miles de emprendimientos digitales rentables quedan fuera del crédito bancario tradicional por no contar con garantías inmobiliarias.',
+          'CreditSeed se conecta vía APIs autorizadas a pasarelas de pago y facturación electrónica para proyectar capacidad de repago real.',
+          'Permite acceder a líneas flexibles cuyo repago se adapta automáticamente a un porcentaje de las ventas mensuales.'
+        ],
+        contact: { lead: 'Nicolás Roldán', role: 'CTO & Co-Founder', email: 'nico@creditseed.demo', handle: 'linkedin.com/in/nicolasroldan-demo' },
+        trivia: [
+          { q: '¿En cuánto tiempo otorga capital de trabajo CreditSeed?', options: ['24 horas', '3 semanas', '6 meses'], answer: 0 },
+          { q: '¿Cómo se adapta el repago de sus líneas flexibles?', options: ['A un porcentaje de las ventas mensuales', 'Cuota fija en oro', 'Pago único a 10 años'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p10',
+        stand: 'C-02',
+        pin: '6891',
+        category: 'Healthtech & Biotech',
+        title: 'NeuroMotion: Rehabilitación Motriz Gamificada',
+        team: 'Kinésica Digital',
+        stage: 'Pre-Seed · 5 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 115,
+        pinXp: 175,
+        summary: 'Software de seguimiento articular sin sensores corporales que convierte los ejercicios de kinesiología en casa en sesiones interactivas.',
+        paragraphs: [
+          'Más del 65% de los pacientes abandona sus rutinas de rehabilitación física domiciliaria por falta de retroalimentación y aburrimiento.',
+          'NeuroMotion utiliza únicamente la cámara web de una laptop o tablet para medir ángulos articulares con precisión clínica en tiempo real.',
+          'El kinesiólogo ajusta la intensidad de forma remota y recibe alertas si detecta compensaciones posturales incorrectas.',
+          'Podés probar una demostración interactiva de captura de movimiento directamente en el stand C-02.'
+        ],
+        contact: { lead: 'Martín Cárdenas', role: 'Co-Founder & Bioingeniero', email: 'martin@kinesicadigital.demo', handle: 'linkedin.com/in/martincardenas-demo' },
+        trivia: [
+          { q: '¿Qué hardware necesita el paciente en su casa para usar NeuroMotion?', options: ['Solo la cámara de una laptop o tablet', 'Un traje con 20 sensores', 'Un casco de realidad virtual'], answer: 0 },
+          { q: '¿Qué porcentaje de pacientes suele abandonar las rutinas tradicionales?', options: ['Más del 65%', '10%', '25%'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p11',
+        stand: 'C-03',
+        pin: '4105',
+        category: 'SaaS & Productividad',
+        title: 'DocuGuard: Auditoría Legal Automatizada',
+        team: 'LexIA Tech',
+        stage: 'Seed · 7 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Asistente contractual para startups que detecta cláusulas abusivas, riesgos de propiedad intelectual y vencimientos críticos en segundos.',
+        paragraphs: [
+          'Firmar acuerdos comerciales o de inversión sin revisión especializada puede comprometer el futuro de una empresa temprana.',
+          'DocuGuard compara cada contrato contra playbooks legales validados, resaltando riesgos en lenguaje claro y sugiriendo redacciones alternativas.',
+          'Incluye bóveda cifrada con alertas automáticas 60 días antes de renovaciones o hitos de cumplimiento.'
+        ],
+        contact: { lead: 'Dra. Elena Navarro', role: 'Co-Founder & Legal Tech Lead', email: 'elena@lexiatech.demo', handle: 'linkedin.com/in/elenanavarro-demo' },
+        trivia: [
+          { q: '¿Con cuántos días de anticipación alerta DocuGuard sobre renovaciones?', options: ['60 días', '1 día', '180 días'], answer: 0 },
+          { q: '¿Qué detecta automáticamente en los contratos de startups?', options: ['Cláusulas abusivas y riesgos de propiedad intelectual', 'Errores de diseño gráfico', 'Precios de acciones'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p12',
+        stand: 'C-04',
+        pin: '7743',
+        category: 'Edtech & Futuro del Trabajo',
+        title: 'CodeMentor Live: Pair Programming Colaborativo',
+        team: 'Nodos Academy',
+        stage: 'Bootstrapped · 6 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Plataforma de aprendizaje técnico basado en mentorías en vivo de 30 minutos donde desarrolladores senior desbloquean proyectos reales.',
+        paragraphs: [
+          'Los cursos grabados tienen tasas de finalización menores al 12% cuando los estudiantes se traban en errores de arquitectura reales.',
+          'CodeMentor Live conecta a emprendedores técnicos con mentores verificados en un entorno de código compartido con diagnóstico asistido.',
+          'El sistema recomienda micro-cápsulas personalizadas basadas exactamente en los errores cometidos durante la sesión.'
+        ],
+        contact: { lead: 'Ramiro Ocampo', role: 'Founder & Lead Engineer', email: 'ramiro@nodostech.demo', handle: 'linkedin.com/in/ramiroocampo-demo' },
+        trivia: [
+          { q: '¿Cuánto duran las sesiones de mentoría en vivo?', options: ['30 minutos', '4 horas', '15 segundos'], answer: 0 },
+          { q: '¿Cuál es la tasa de finalización habitual de los cursos grabados mencionada?', options: ['Menor al 12%', '85%', '50%'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p13',
+        stand: 'D-01',
+        pin: '1589',
+        category: 'Inteligencia Artificial',
+        title: 'VoiceBridge: Doblaje Neural en Tiempo Real',
+        team: 'LinguaWave AI',
+        stage: 'Pre-Serie A · 12 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 120,
+        pinXp: 180,
+        summary: 'API de traducción simultánea para videollamadas B2B que conserva el timbre de voz, la emoción y la sincronización labial del hablante.',
+        paragraphs: [
+          'Cerrar ventas globales o liderar equipos distribuidos sigue limitado por las barreras idiomáticas en conversaciones espontáneas.',
+          'VoiceBridge procesa audio en streaming con una latencia inferior a 380 milisegundos, traduciendo entre español, inglés, portugués y francés.',
+          'A diferencia de los traductores robóticos tradicionales, preserva las pausas naturales y el tono profesional de cada interlocutor.',
+          'En el stand D-01 podés mantener una charla en vivo con un asistente en otro idioma usando auriculares.'
+        ],
+        contact: { lead: 'Paula Giménez', role: 'VP of Product & Co-Founder', email: 'paula@linguawave.demo', handle: 'linkedin.com/in/paulagimenez-demo' },
+        trivia: [
+          { q: '¿Cuál es la latencia de procesamiento de VoiceBridge?', options: ['Inferior a 380 milisegundos', '5 segundos', '2 minutos'], answer: 0 },
+          { q: '¿Qué conserva además de traducir las palabras?', options: ['El timbre de voz y la emoción del hablante', 'Solo subtítulos en blanco y negro', 'Música de fondo'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p14',
+        stand: 'D-02',
+        pin: '9034',
+        category: 'Cleantech & Sustentabilidad',
+        title: 'H2O Smart: Detección Acústica de Fugas',
+        team: 'AquaNode',
+        stage: 'Seed · 7 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Sensores magnéticos de bajo costo que escuchan vibraciones en tuberías urbanas para localizar pérdidas de agua subterráneas antes de que afloren.',
+        paragraphs: [
+          'Cerca del 30% del agua potabilizada en ciudades se pierde en fugas invisibles de la red de distribución subterránea.',
+          'AquaNode se adhiere externamente a válvulas existentes sin cortar el suministro y envía firmas acústicas vía LoRaWAN cada noche.',
+          'Su algoritmo triangula el punto exacto de la fisura con un margen de error menor a un metro, evitando excavaciones innecesarias.'
+        ],
+        contact: { lead: 'Federico Solís', role: 'CEO & Co-Founder', email: 'fede@aquanode.demo', handle: 'linkedin.com/in/federicosolis-demo' },
+        trivia: [
+          { q: '¿Qué porcentaje de agua potabilizada suele perderse en fugas invisibles?', options: ['Cerca del 30%', '5%', '80%'], answer: 0 },
+          { q: '¿Con qué margen de error localiza la fisura su algoritmo?', options: ['Menor a un metro', '50 metros', '10 kilómetros'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p15',
+        stand: 'D-03',
+        pin: '3672',
+        category: 'Fintech & Blockchain',
+        title: 'CarbonVault: Tokenización de Bonos Forestales',
+        team: 'Raíz Verde Ledger',
+        stage: 'Pre-Seed · 6 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 115,
+        pinXp: 175,
+        summary: 'Mercado transparente donde empresas compensan su huella comprando fracciones trazables de captura de carbono verificada por satélite.',
+        paragraphs: [
+          'El mercado voluntario de carbono sufre de opacidad, intermediarios costosos y dudas sobre la permanencia real de los bosques protegidos.',
+          'CarbonVault vincula cada crédito emitido a coordenadas geográficas monitoreadas trimestralmente mediante radar satelital.',
+          'Las empresas reciben un certificado verificable con código QR para integrar directamente en sus reportes de sostenibilidad.',
+          'El 85% de los fondos recaudados llega de forma directa a las comunidades y productores que conservan el bosque nativo.'
+        ],
+        contact: { lead: 'Inés Villalba', role: 'Co-Founder & Sustainability Lead', email: 'ines@carbonvault.demo', handle: 'linkedin.com/in/inesvillalba-demo' },
+        trivia: [
+          { q: '¿Qué porcentaje de los fondos llega directamente a quienes conservan el bosque?', options: ['85%', '20%', '50%'], answer: 0 },
+          { q: '¿Cómo se verifica la captura de carbono de cada crédito?', options: ['Mediante monitoreo por radar satelital', 'Por declaración jurada sin control', 'Una vez cada 10 años'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p16',
+        stand: 'D-04',
+        pin: '5218',
+        category: 'SaaS & Productividad',
+        title: 'PulseBoard: Analítica de Producto sin Código',
+        team: 'DatoClaro',
+        stage: 'Seed · 8 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Herramienta de inteligencia de producto que auto-instrumenta eventos de usuario y responde preguntas de retención en lenguaje natural.',
+        paragraphs: [
+          'Configurar embudos de conversión complejos suele requerir semanas de trabajo de ingeniería de datos.',
+          'PulseBoard captura interacciones clave con un único script ligero y permite consultar cohortes escribiendo preguntas simples.',
+          'Detecta automáticamente qué funcionalidades correlacionan con mayor retención a 30 días.'
+        ],
+        contact: { lead: 'Gonzalo Paz', role: 'Founder & Data Architect', email: 'gonzalo@pulseboard.demo', handle: 'linkedin.com/in/gonzalopaz-demo' },
+        trivia: [
+          { q: '¿Cómo se integran los eventos de usuario en PulseBoard?', options: ['Con un único script ligero auto-instrumentado', 'Reescribiendo toda la app', 'Subiendo planillas manuales'], answer: 0 },
+          { q: '¿Cómo pueden los usuarios consultar sus cohortes?', options: ['Escribiendo preguntas en lenguaje natural', 'Programando en ensamblador', 'Llamando a soporte'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p17',
+        stand: 'E-01',
+        pin: '8490',
+        category: 'Healthtech & Biotech',
+        title: 'SleepSync: Biomarcadores de Descanso y Estrés',
+        team: 'CronoSalud',
+        stage: 'Pre-Seed · 5 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Plataforma de salud preventiva corporativa que integra datos de wearables para prevenir el burnout en equipos de alto rendimiento.',
+        paragraphs: [
+          'El agotamiento crónico reduce la productividad creativa y dispara la rotación de talento en startups tecnológicas.',
+          'SleepSync procesa variabilidad de frecuencia cardíaca y calidad de sueño de forma anónima y agregada para alertar sobre sobrecarga grupal.',
+          'Ofrece micro-intervenciones personalizadas de recuperación cognitiva sin exponer datos médicos individuales al empleador.'
+        ],
+        contact: { lead: 'Carolina Benítez', role: 'CEO & Médica Especialista', email: 'caro@cronosalud.demo', handle: 'linkedin.com/in/carolinabenitez-demo' },
+        trivia: [
+          { q: '¿Cómo protege SleepSync la privacidad de los colaboradores?', options: ['Procesa métricas de forma anónima y agregada sin exponer datos individuales', 'Publica un ranking público de sueño', 'No usa encriptación'], answer: 0 },
+          { q: '¿Qué busca prevenir principalmente en los equipos?', options: ['El burnout y agotamiento crónico', 'Lesiones de fútbol', 'Alergias estacionales'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p18',
+        stand: 'E-02',
+        pin: '2047',
+        category: 'Edtech & Futuro del Trabajo',
+        title: 'LabSim XR: Laboratorios de Ciencias en el Navegador',
+        team: 'Átomo Virtual',
+        stage: 'Seed · 9 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Simulaciones 3D interactivas de química, física y biotecnología que funcionan en computadoras escolares básicas sin requerir equipamiento costoso.',
+        paragraphs: [
+          'Más del 70% de las escuelas secundarias de la región carece de insumos y reactivos para realizar prácticas experimentales regulares.',
+          'LabSim XR permite formular hipótesis, cometer errores seguros y analizar curvas de reacción en tiempo real desde cualquier navegador.',
+          'Incluye guías docentes alineadas a currículas oficiales y analíticas de progreso por estudiante.'
+        ],
+        contact: { lead: 'Esteban Ríos', role: 'Co-Founder & Lead 3D Dev', email: 'esteban@atomovirtual.demo', handle: 'linkedin.com/in/estebanrios-demo' },
+        trivia: [
+          { q: '¿Qué porcentaje de escuelas carece de insumos para prácticas regulares según el proyecto?', options: ['Más del 70%', '15%', '40%'], answer: 0 },
+          { q: '¿Qué se necesita para ejecutar LabSim XR?', options: ['Un navegador web en una computadora básica', 'Una supercomputadora', 'Reactivos químicos reales'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p19',
+        stand: 'E-03',
+        pin: '6385',
+        category: 'Inteligencia Artificial',
+        title: 'SupplyMind: Predicción de Demanda para Retail',
+        team: 'Órbita Logística',
+        stage: 'Pre-Serie A · 10 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Motor predictivo que cruza historial de ventas, clima y eventos locales para evitar quiebres de stock y sobrestock en comercios.',
+        paragraphs: [
+          'Tener capital inmovilizado en mercadería que no rota o perder ventas por falta de talle son los dos mayores dolores del comercio moderno.',
+          'SupplyMind automatiza las órdenes de reposición por sucursal con precisión diaria, liberando hasta un 28% de flujo de caja.',
+          'Se integra de manera nativa con los principales sistemas de punto de venta y tiendas online.'
+        ],
+        contact: { lead: 'Micaela Torres', role: 'CEO & Co-Founder', email: 'micaela@orbitalogistica.demo', handle: 'linkedin.com/in/micaelatorres-demo' },
+        trivia: [
+          { q: '¿Qué variables cruza SupplyMind además del historial de ventas?', options: ['Clima y eventos locales', 'Horóscopo y fases lunares', 'Resultados de fútbol'], answer: 0 },
+          { q: '¿Cuánto flujo de caja puede liberar al optimizar inventarios?', options: ['Hasta un 28%', '5%', '90%'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p20',
+        stand: 'E-04',
+        pin: '9176',
+        category: 'Cleantech & Sustentabilidad',
+        title: 'BioResina: Plásticos Compostables de Alga',
+        team: 'MarPolímero',
+        stage: 'Seed · 7 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 120,
+        pinXp: 180,
+        summary: 'Pellets termoplásticos derivados de algas pardas invasoras compatibles con máquinas inyectoras convencionales.',
+        paragraphs: [
+          'La transición hacia materiales sustentables suele frenarse porque las fábricas deben invertir millones en nueva maquinaria.',
+          'MarPolímero formuló un biopolímero granular que se procesa en líneas de inyección y extrusión estándar sin modificaciones.',
+          'Los productos fabricados se biodegradan completamente en compost domiciliario en 90 días y enriquecen el suelo.',
+          'En el stand exhiben envases cosméticos, cubiertos y piezas técnicas inyectadas con su material.'
+        ],
+        contact: { lead: 'Ing. Lucas Medina', role: 'Co-Founder & Materiales', email: 'lucas@marpolimero.demo', handle: 'linkedin.com/in/lucasmedina-demo' },
+        trivia: [
+          { q: '¿En cuánto tiempo se biodegrada el material en compost domiciliario?', options: ['90 días', '5 años', '10 días'], answer: 0 },
+          { q: '¿Cuál es su principal ventaja industrial?', options: ['Es compatible con máquinas inyectoras convencionales', 'Requiere hornos espaciales', 'Solo se moldea a mano'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p21',
+        stand: 'F-01',
+        pin: '4462',
+        category: 'Fintech & Blockchain',
+        title: 'Split Equity: Gestión de Cap Table y Vesting',
+        team: 'SociosTech',
+        stage: 'Bootstrapped · 5 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Plataforma para startups tempranas que automatiza acuerdos de vesting entre fundadores, simulaciones de rondas y entrega de stock options.',
+        paragraphs: [
+          'Muchos emprendimientos fracasan por conflictos societarios mal documentados en sus primeros meses de vida.',
+          'Split Equity ordena la tabla de capitalización en un único tablero transparente, calculando diluciones ante notas convertibles o rondas SAFE.',
+          'Permite a cada miembro del equipo visualizar en tiempo real el valor proyectado de su participación.'
+        ],
+        contact: { lead: 'Valentina Cruz', role: 'Co-Founder & CEO', email: 'valen@sociostech.demo', handle: 'linkedin.com/in/valentinacruz-demo' },
+        trivia: [
+          { q: '¿Qué permite simular Split Equity ante rondas SAFE o notas convertibles?', options: ['Las diluciones de la tabla de capitalización', 'El clima del evento', 'El diseño de oficinas'], answer: 0 },
+          { q: '¿Qué automatiza entre los fundadores?', options: ['Acuerdos de vesting y stock options', 'Envíos de paquetería', 'Reservas de vuelos'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p22',
+        stand: 'F-02',
+        pin: '7029',
+        category: 'SaaS & Productividad',
+        title: 'SyncOps: Automatización de Soporte B2B',
+        team: 'MesaÁgil',
+        stage: 'Seed · 8 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Conector inteligente entre canales de Slack/WhatsApp de clientes y el backlog de ingeniería para resolver tickets técnicos sin fricción.',
+        paragraphs: [
+          'Cuando los clientes B2B reportan incidencias por mensajería instantánea, el contexto técnico suele perderse en hilos interminables.',
+          'SyncOps detecta reportes de bugs, adjunta logs del sistema automáticamente y sincroniza el estado con Jira o Linear.',
+          'Reduce el tiempo de primera respuesta técnica de horas a menos de 4 minutos.'
+        ],
+        contact: { lead: 'Sebastián Acosta', role: 'CTO & Co-Founder', email: 'seba@mesaagil.demo', handle: 'linkedin.com/in/sebastianacosta-demo' },
+        trivia: [
+          { q: '¿A cuánto reduce SyncOps el tiempo de primera respuesta técnica?', options: ['A menos de 4 minutos', 'A 24 horas', 'A 1 semana'], answer: 0 },
+          { q: '¿Con qué herramientas de ingeniería sincroniza los tickets?', options: ['Jira o Linear', 'Photoshop', 'Excel offline'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p23',
+        stand: 'F-03',
+        pin: '1836',
+        category: 'Healthtech & Biotech',
+        title: 'ClaroVoz: Terapia Fonoaudiológica Asistida',
+        team: 'FonoLab',
+        stage: 'Pre-Seed · 5 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 80,
+        pinXp: 160,
+        summary: 'Aplicación interactiva con análisis acústico de formantes que acompaña a niños y adultos en ejercicios de articulación del habla.',
+        paragraphs: [
+          'La continuidad entre sesiones presenciales de fonoaudiología es clave para consolidar avances motores del habla.',
+          'ClaroVoz transforma ejercicios fonéticos en desafíos visuales sensibles a la entonación y precisión articuladora del usuario.',
+          'Los profesionales reciben gráficos objetivos de evolución semanal.'
+        ],
+        contact: { lead: 'Andrés Molina', role: 'Co-Founder & Speech Tech', email: 'andres@fonolab.demo', handle: 'linkedin.com/in/andresmolina-demo' },
+        trivia: [
+          { q: '¿Qué analiza la app durante los ejercicios del usuario?', options: ['La precisión articuladora y entonación acústica', 'El ritmo cardíaco', 'La velocidad al escribir'], answer: 0 },
+          { q: '¿Qué reciben los profesionales de la salud?', options: ['Gráficos objetivos de evolución semanal', 'Solo facturas', 'Mensajes de texto sin datos'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p24',
+        stand: 'F-04',
+        pin: '5941',
+        category: 'Edtech & Futuro del Trabajo',
+        title: 'PitchArena: Entrenador de Inversión para Founders',
+        team: 'Vuelo Inicial',
+        stage: 'Bootstrapped · 4 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Simulador de rondas de inversión donde emprendedores practican su pitch de 3 minutos y reciben preguntas difíciles de inversores virtuales.',
+        paragraphs: [
+          'Muchos fundadores técnicos tienen productos sólidos pero pierden oportunidades ante fondos por no comunicar con claridad su tracción y modelo de negocio.',
+          'PitchArena evalúa ritmo, claridad financiera y solidez de respuestas ante objeciones reales de Venture Capital.',
+          'Podés grabar un mini-pitch de 60 segundos en el stand F-04 y llevarte tu diagnóstico instantáneo.'
+        ],
+        contact: { lead: 'Camila Vega', role: 'Founder & Venture Advisor', email: 'camila@pitcharena.demo', handle: 'linkedin.com/in/camilavega-demo' },
+        trivia: [
+          { q: '¿Qué evalúa PitchArena durante la práctica del emprendedor?', options: ['Ritmo, claridad financiera y respuestas ante objeciones', 'El color de su ropa', 'La velocidad de tipeo'], answer: 0 },
+          { q: '¿Qué podés hacer en el stand F-04?', options: ['Grabar un mini-pitch de 60 segundos y recibir diagnóstico', 'Comprar acciones de bolsa', 'Imprimir tarjetas'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p25',
+        stand: 'G-01',
+        pin: '3298',
+        category: 'Inteligencia Artificial',
+        title: 'SecureShield: Firewall contra Inyección de Prompts',
+        team: 'Bastión AI',
+        stage: 'Seed · 7 integrantes',
+        readTime: '4 min',
+        isLong: true,
+        readXp: 115,
+        pinXp: 175,
+        summary: 'Capa de ciberseguridad en tiempo real que protege asistentes empresariales de IA contra fugas de datos confidenciales y manipulación.',
+        paragraphs: [
+          'A medida que las empresas despliegan copilotos internos conectados a bases de datos sensibles, crecen los ataques de manipulación de instrucciones.',
+          'Bastión AI inspecciona cada entrada y salida en menos de 15 milisegundos, bloqueando intentos de exfiltración de información o respuestas no autorizadas.',
+          'Ofrece trazabilidad completa para auditorías de seguridad informática y cumplimiento de protección de datos.',
+          'Ya protege más de 4 millones de consultas mensuales en empresas financieras y de salud.'
+        ],
+        contact: { lead: 'Renata Silva', role: 'CISO & Co-Founder', email: 'renata@bastionai.demo', handle: 'linkedin.com/in/renatasilva-demo' },
+        trivia: [
+          { q: '¿En cuánto tiempo inspecciona cada consulta Bastión AI?', options: ['En menos de 15 milisegundos', 'En 2 segundos', 'En 1 minuto'], answer: 0 },
+          { q: '¿Cuántas consultas mensuales protege actualmente?', options: ['Más de 4 millones', '10 mil', '500 mil'], answer: 0 }
+        ]
+      },
+      {
+        id: 'p26',
+        stand: 'G-02',
+        pin: '8814',
+        category: 'Cleantech & Sustentabilidad',
+        title: 'FleetVolt: Optimización de Flotas Eléctricas Urbanas',
+        team: 'RutaCero Mobility',
+        stage: 'Seed · 9 integrantes',
+        readTime: '3 min',
+        isLong: false,
+        readXp: 85,
+        pinXp: 165,
+        summary: 'Software de despacho inteligente que planifica rutas de última milla considerando topografía, carga útil y puntos de recarga rápida.',
+        paragraphs: [
+          'Electrificar flotas de reparto urbano requiere sincronizar ventanas de entrega con disponibilidad de cargadores y autonomía real de baterías.',
+          'FleetVolt reduce un 19% los kilómetros en vacío y extiende la vida útil de las baterías evitando descargas profundas innecesarias.',
+          'Se conecta por telemetría directa a utilitarios eléctricos sin hardware adicional.'
+        ],
+        contact: { lead: 'Joaquín Pereyra', role: 'Co-Founder & Mobility Lead', email: 'joaco@rutacero.demo', handle: 'linkedin.com/in/joaquinpereyra-demo' },
+        trivia: [
+          { q: '¿En qué porcentaje reduce FleetVolt los kilómetros en vacío?', options: ['19%', '5%', '60%'], answer: 0 },
+          { q: '¿Qué variables considera además del mapa para planificar rutas?', options: ['Topografía, carga útil y puntos de recarga', 'Precio del peaje aéreo', 'Color del vehículo'], answer: 0 }
+        ]
+      }
+    ];
+
+    const CHALLENGES_DATA = [
+      {
+        id: 'c_pins_5',
+        title: 'Networker Serial',
+        desc: 'Valida 5 conexiones presenciales ingresando el PIN en stands.',
+        xpReward: 350,
+        accent: '#E62987',
+        getProgress: (state) => ({ current: Math.min(state.connectedProjects.length, 5), target: 5 })
+      },
+      {
+        id: 'c_ia_3',
+        title: 'Radar Inteligencia Artificial',
+        desc: 'Conecta en stand con 3 startups de Inteligencia Artificial.',
+        xpReward: 300,
+        accent: '#69C5DC',
+        getProgress: (state) => {
+          const count = state.connectedProjects.filter(pid => {
+            const p = PROJECTS_DATA.find(x => x.id === pid);
+            return p && p.category === 'Inteligencia Artificial';
+          }).length;
+          return { current: Math.min(count, 3), target: 3 };
+        }
+      },
+      {
+        id: 'c_cat_4',
+        title: 'Visión 360° del Ecosistema',
+        desc: 'Explora y lee proyectos de al menos 4 verticales distintas.',
+        xpReward: 250,
+        accent: '#C6D300',
+        getProgress: (state) => {
+          const cats = new Set(state.readProjects.map(pid => {
+            const p = PROJECTS_DATA.find(x => x.id === pid);
+            return p ? p.category : null;
+          }).filter(Boolean));
+          return { current: Math.min(cats.size, 4), target: 4 };
+        }
+      },
+      {
+        id: 'c_trivia_4',
+        title: 'Due Diligence Express',
+        desc: 'Completa con éxito 4 trivias sobre los emprendimientos.',
+        xpReward: 220,
+        accent: '#EC701D',
+        getProgress: (state) => ({ current: Math.min(state.completedTrivias.length, 4), target: 4 })
+      },
+      {
+        id: 'c_long_3',
+        title: 'Análisis Profundo',
+        desc: 'Termina de leer 3 pitches extensos (4 min o más).',
+        xpReward: 280,
+        accent: '#E62987',
+        getProgress: (state) => {
+          const count = state.readProjects.filter(pid => {
+            const p = PROJECTS_DATA.find(x => x.id === pid);
+            return p && p.isLong;
+          }).length;
+          return { current: Math.min(count, 3), target: 3 };
+        }
+      },
+      {
+        id: 'c_notif_2',
+        title: 'Agenda Estratégica',
+        desc: 'Activa notificaciones en 2 charlas o paneles de JIJE.',
+        xpReward: 200,
+        accent: '#69C5DC',
+        getProgress: (state) => ({ current: Math.min(state.notifiedSessions.length, 2), target: 2 })
+      }
+    ];
+
+    const BADGES_DATA = [
+      { id: 'b_first_read', name: 'Primer Pitch', desc: 'Leíste tu primer proyecto en JIJE', icon: 'eye', accent: '#69C5DC', check: (s) => s.readProjects.length >= 1 },
+      { id: 'b_first_pin', name: 'Primera Conexión', desc: 'Validaste tu primer PIN en stand', icon: 'handshake', accent: '#E62987', check: (s) => s.connectedProjects.length >= 1 },
+      { id: 'b_networker', name: 'Conector Pro', desc: 'Validaste 6 o más stands en el evento', icon: 'network', accent: '#C6D300', check: (s) => s.connectedProjects.length >= 6 },
+      { id: 'b_scholar', name: 'Scouter Tech', desc: 'Exploraste 12 o más emprendimientos', icon: 'award', accent: '#EC701D', check: (s) => s.readProjects.length >= 12 },
+      { id: 'b_agenda', name: 'Agenda Lista', desc: 'Activaste 3 alertas en el programa JIJE', icon: 'bell', accent: '#69C5DC', check: (s) => s.notifiedSessions.length >= 3 },
+      { id: 'b_quiz_master', name: 'Mente Analítica', desc: 'Completaste 5 trivias de proyectos', icon: 'zap', accent: '#E62987', check: (s) => s.completedTrivias.length >= 5 }
+    ];
+
+    // Evento de un solo día (sin Día 1 / Día 2)
+    const AGENDA_DATA = [
+      { id: 'ag1', time: '09:30', title: 'Apertura JIJE: Emprender con tecnología desde el sur global', speaker: 'Dra. Clara Montiel · Directora Ejecutiva JIJE', stage: 'Auditorio Principal', type: 'Keynote' },
+      { id: 'ag2', time: '11:00', title: 'Panel: Inteligencia Artificial aplicada a problemas reales', speaker: 'Kinetix AI + Bastión AI + LinguaWave', stage: 'Auditorio Principal', type: 'Panel Tech' },
+      { id: 'ag3', time: '12:30', title: 'Ronda de Pitches: Cleantech y Economía Circular', speaker: '6 startups seleccionadas · Moderado por Fondos Verdes', stage: 'Escenario Pitch', type: 'Pitches' },
+      { id: 'ag4', time: '14:30', title: 'Workshop: De MVP a primeros 100 clientes B2B', speaker: 'Diego Bustamante (FlowLedger)', stage: 'Sala Taller', type: 'Workshop' },
+      { id: 'ag5', time: '16:00', title: 'Conversatorio: Fintech, regulación y pagos sin fronteras', speaker: 'Caudal FinTech + CreditSeed', stage: 'Auditorio Principal', type: 'Conversatorio' },
+      { id: 'ag6', time: '17:30', title: 'Demo Day Final & Premiación de Startups JIJE', speaker: 'Jurado de Inversores & Ecosistema Emprendedor', stage: 'Escenario Pitch', type: 'Cierre' }
+    ];
+
+    const STREAM_MESSAGES_POOL = [
+      { user: 'Valentín R.', text: '¡Tremendo nivel técnico en los stands del sector A!' },
+      { user: 'Martina G.', text: '¿Alguien ya pasó por BioScan Pocket en A-04? Impresionante.' },
+      { user: 'Joaquín L.', text: 'Excelente panel sobre IA aplicada, súper concreto 🔥' },
+      { user: 'Camila D.', text: 'Ya validé 4 conexiones en stands, muy buena predisposición de los founders.' },
+      { user: 'Tomás B.', text: 'Nos vemos a las 12:30 en el Escenario Pitch 🙌' },
+      { user: 'Lucía P.', text: '¡Qué gran edición de JIJE este año!' }
+    ];
+
+    // =========================================================================
+    // 2. GESTIÓN DE ESTADO Y LOCALSTORAGE
+    // =========================================================================
+
+    const STORAGE_KEY = 'jije_expo_state_v2';
+
+    function getSeededState() {
+      return {
+        userName: 'Sofía Méndez',
+        userHeadline: 'Product Designer & Co-Founder · Explorando startups tech',
+        userLocation: 'Santa Fe, Argentina · Comunidad JIJE',
+        userCode: 'JIJE-2026-849',
+        xp: 1640,
+        readProjects: ['p01', 'p02', 'p03', 'p05', 'p07', 'p09', 'p13'],
+        connectedProjects: ['p01', 'p03', 'p09'],
+        completedTrivias: ['p01', 'p02'],
+        claimedChallenges: [],
+        unlockedBadges: {
+          'b_first_read': 'Hoy · 09:45',
+          'b_first_pin': 'Hoy · 10:20'
+        },
+        interests: ['Inteligencia Artificial', 'Fintech & Blockchain', 'SaaS & Productividad'],
+        notifiedSessions: ['ag1', 'ag2'],
+        streamReactions: 14,
+        chatMessages: [
+          { user: 'Equipo JIJE', text: '¡Bienvenidos al streaming oficial de la Jornada de Innovación, Jóvenes y Emprendedurismo!', isMod: true },
+          { user: 'Valentín R.', text: '¡Arrancamos con toda energía en el Auditorio Principal!', isMod: false },
+          { user: 'Camila D.', text: 'Recorriendo stands y validando pines 🚀', isMod: false }
+        ]
+      };
+    }
+
+    function getFreshState() {
+      return {
+        userName: 'Sofía Méndez',
+        userHeadline: 'Product Designer & Co-Founder · Explorando startups tech',
+        userLocation: 'Santa Fe, Argentina · Comunidad JIJE',
+        userCode: 'JIJE-2026-849',
+        xp: 0,
+        readProjects: [],
+        connectedProjects: [],
+        completedTrivias: [],
+        claimedChallenges: [],
+        unlockedBadges: {},
+        interests: ['Inteligencia Artificial', 'Cleantech & Sustentabilidad'],
+        notifiedSessions: [],
+        streamReactions: 0,
+        chatMessages: [
+          { user: 'Equipo JIJE', text: '¡Bienvenidos al streaming oficial de JIJE!', isMod: true }
+        ]
+      };
+    }
+
+    let appState = loadState();
+    // Inicio por defecto en Streaming según requerimiento
+    let currentTab = 'streaming';
+    let projectFilter = 'all';
+    let agendaStageFilter = 'Todas';
+    let showQrInProfile = false;
+
+    // Variables de vista de proyecto y lectura
+    let activeProjectId = null;
+    let readingTimerInterval = null;
+    let readingSecondsElapsed = 0;
+    let hasScrolledToBottom = false;
+    let triviaAnswersState = {};
+
+    // Variables de modal PIN
+    let pinTargetProjectId = null;
+    let currentPinDigits = '';
+
+    // Variables de streaming
+    let streamViewerCount = 542;
+    let streamInterval = null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          return JSON.parse(raw);
+        }
+      } catch (e) {
+        console.warn('Error leyendo localStorage:', e);
+      }
+      const initial = getSeededState();
+      saveState(initial);
+      return initial;
+    }
+
+    function saveState(stateToSave = appState) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+      } catch (e) {
+        console.warn('Error guardando localStorage:', e);
+      }
+    }
+
+    function getLevelInfo(totalXp) {
+      let level = 1;
+      let xpAccumulatedForPrevLevels = 0;
+      let xpNeededForNext = 250;
+
+      while (totalXp >= xpAccumulatedForPrevLevels + xpNeededForNext) {
+        xpAccumulatedForPrevLevels += xpNeededForNext;
+        level++;
+        xpNeededForNext = 200 + (level * 50);
+      }
+
+      const currentLevelXp = totalXp - xpAccumulatedForPrevLevels;
+      const progressPct = Math.min(100, Math.round((currentLevelXp / xpNeededForNext) * 100));
+
+      return {
+        level,
+        currentLevelXp,
+        xpNeededForNext,
+        progressPct,
+        totalXp
+      };
+    }
+
+    function addXp(amount, reasonText) {
+      if (!amount || amount <= 0) return;
+      const prevLevel = getLevelInfo(appState.xp).level;
+      appState.xp += amount;
+      const newLevelInfo = getLevelInfo(appState.xp);
+
+      showToast(`+${amount} XP`, reasonText, '#C6D300', '#0D0D0D');
+      checkNewBadges();
+      saveState();
+      updateNavBadges();
+
+      if (newLevelInfo.level > prevLevel) {
+        setTimeout(() => {
+          triggerCelebration(
+            '¡SUBISTE DE NIVEL!',
+            `Alcanzaste el Nivel ${newLevelInfo.level}`,
+            `Seguís conectando con emprendedores y startups tecnológicas en JIJE.`,
+            'level'
+          );
+        }, 420);
+      }
+    }
+
+    function checkNewBadges() {
+      const nowStr = 'Hoy · ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      BADGES_DATA.forEach(badge => {
+        if (!appState.unlockedBadges[badge.id] && badge.check(appState)) {
+          appState.unlockedBadges[badge.id] = nowStr;
+        }
+      });
+    }
+
+    function updateNavBadges() {
+      const hasClaimable = CHALLENGES_DATA.some(c => {
+        if (appState.claimedChallenges.includes(c.id)) return false;
+        const prog = c.getProgress(appState);
+        return prog.current >= prog.target;
+      });
+      const dot = document.getElementById('nav-badge-desafios');
+      if (dot) {
+        dot.classList.toggle('hidden', !hasClaimable);
+      }
+    }
+
+    // =========================================================================
+    // 3. UI HELPERS: TOASTS, CELEBRACIONES Y MINIATURAS MINIMALISTAS
+    // =========================================================================
+
+    function showToast(title, subtitle, bgColor = '#0D0D0D', textColor = '#FFFFFF') {
+      const container = document.getElementById('xp-toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'animate-xp-toast flex items-center gap-2 px-4 py-2 rounded-full font-bold shadow-lg border border-black/10';
+      toast.style.backgroundColor = bgColor;
+      toast.style.color = textColor;
+      toast.innerHTML = `
+        <span class="text-xs font-black tracking-tight">${title}</span>
+        ${subtitle ? `<span class="text-[11px] font-medium opacity-85 border-l border-current/25 pl-2">${subtitle}</span>` : ''}
+      `;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 2250);
+    }
+
+    function triggerCelebration(badgeLabel, title, desc, type = 'level') {
+      const modal = document.getElementById('celebration-modal');
+      document.getElementById('celebration-badge-label').textContent = badgeLabel;
+      document.getElementById('celebration-title').textContent = title;
+      document.getElementById('celebration-desc').textContent = desc;
+
+      const iconWrap = document.getElementById('celebration-icon');
+      if (type === 'level') {
+        iconWrap.innerHTML = `<svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+      } else {
+        iconWrap.innerHTML = `<svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`;
+      }
+
+      const confettiLayer = document.getElementById('confetti-layer');
+      confettiLayer.innerHTML = '';
+      const colors = ['#E62987', '#C6D300', '#EC701D', '#69C5DC', '#0D0D0D'];
+      for (let i = 0; i < 28; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.top = `${-10 + Math.random() * 30}px`;
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.animationDelay = `${Math.random() * 0.4}s`;
+        confettiLayer.appendChild(piece);
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeCelebrationModal() {
+      document.getElementById('celebration-modal').classList.add('hidden');
+    }
+
+    function getCategoryMeta(categoryName) {
+      return CATEGORIES.find(c => c.id === categoryName) || CATEGORIES[0];
+    }
+
+    function getProjectThumbnailSvg(project, large = false) {
+      const meta = getCategoryMeta(project.category);
+      const seed = parseInt(project.id.replace(/\D/g, ''), 10) || 1;
+      return `
+        <div class="relative w-full ${large ? 'h-40 rounded-2xl' : 'h-24 rounded-xl'} overflow-hidden flex items-center justify-center border border-surface-border bg-ink">
+          <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid slice">
+            <circle cx="${35 + (seed * 23) % 130}" cy="${30 + (seed * 17) % 60}" r="${26 + (seed % 18)}" fill="${meta.color}" opacity="0.88"/>
+            <rect x="${95 + (seed * 13) % 65}" y="${20 + (seed * 11) % 50}" width="44" height="44" rx="10" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.35"/>
+            <line x1="0" y1="${85 + (seed % 20)}" x2="200" y2="${70 - (seed % 20)}" stroke="#FFFFFF" stroke-width="1" opacity="0.2"/>
+          </svg>
+          <span class="relative z-10 font-black ${large ? 'text-lg px-4 py-1.5' : 'text-[11px] px-2.5 py-1'} rounded-lg bg-white text-ink tracking-wider shadow-sm">
+            ${project.stand}
+          </span>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 4. NAVEGACIÓN PRINCIPAL
+    // =========================================================================
+
+    function switchTab(tabName) {
+      currentTab = tabName;
+      updateBottomNavUI();
+      renderCurrentTab();
+      document.getElementById('main-viewport').scrollTop = 0;
+    }
+
+    function updateBottomNavUI() {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const isActive = btn.dataset.tab === currentTab;
+        const iconWrap = btn.querySelector('.nav-icon-wrap');
+        if (isActive) {
+          btn.classList.add('text-ink');
+          btn.classList.remove('text-ink-subtle');
+          iconWrap.classList.add('bg-ink', 'text-white');
+        } else {
+          btn.classList.remove('text-ink');
+          btn.classList.add('text-ink-subtle');
+          iconWrap.classList.remove('bg-ink', 'text-white');
+        }
+      });
+    }
+
+    function renderCurrentTab() {
+      const viewport = document.getElementById('main-viewport');
+      if (currentTab === 'streaming') {
+        viewport.innerHTML = renderStreamingScreen();
+      } else if (currentTab === 'proyectos') {
+        viewport.innerHTML = renderProyectosScreen();
+      } else if (currentTab === 'desafios') {
+        viewport.innerHTML = renderDesafiosScreen();
+      } else if (currentTab === 'jije') {
+        viewport.innerHTML = renderJijeScreen();
+      } else if (currentTab === 'perfil') {
+        viewport.innerHTML = renderPerfilScreen();
+      }
+      updateNavBadges();
+    }
+
+    // =========================================================================
+    // 5. PANTALLA 1 (INICIO): STREAMING + BANNER DE BIENVENIDA (SIN CHECK-IN)
+    // =========================================================================
+
+    function renderStreamingScreen() {
+      const lvl = getLevelInfo(appState.xp);
+      const firstName = appState.userName.split(' ')[0];
+
+      return `
+        <div class="p-5 space-y-5">
+          <!-- Header minimalista -->
+          <header class="flex items-center justify-between pt-1">
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-accent-magenta"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-accent-lime"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-accent-orange"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-accent-cyan"></span>
+              </div>
+              <span class="font-black text-base tracking-tight text-ink">JIJE 2026</span>
+            </div>
+            <button onclick="switchTab('desafios')" class="btn-press flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-alt border border-surface-border text-ink text-xs font-black">
+              <span>Nivel ${lvl.level}</span>
+              <span class="text-ink-subtle">·</span>
+              <span class="text-accent-magenta">${appState.xp.toLocaleString()} XP</span>
+            </button>
+          </header>
+
+          <!-- Banner de Bienvenida del Evento JIJE -->
+          <section class="rounded-3xl bg-ink text-white p-5 relative overflow-hidden">
+            <!-- Acentos geométricos minimalistas -->
+            <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent-magenta opacity-90"></div>
+            <div class="absolute right-12 -bottom-8 w-20 h-20 rounded-full bg-accent-cyan opacity-80"></div>
+            <div class="absolute right-2 bottom-4 w-8 h-8 rounded-lg bg-accent-lime rotate-12"></div>
+
+            <div class="relative z-10 max-w-[82%]">
+              <span class="inline-block text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-white/15 text-accent-lime mb-2">
+                Jornada Internacional de Jóvenes Emprendedores 
+              </span>
+              <h1 class="text-xl font-black leading-tight tracking-tight">
+                ¡Hola, ${firstName}! Bienvenida a JIJE
+              </h1>
+              <p class="text-xs text-white/75 mt-1.5 leading-relaxed">
+                Conectá con startups tecnológicas, descubrí proyectos en vivo y validá pines en cada stand.
+              </p>
+              <div class="flex items-center gap-2 mt-4">
+                <button onclick="switchTab('proyectos')" class="btn-press px-3.5 py-2 rounded-xl bg-white text-ink text-xs font-black">
+                  Explorar proyectos →
+                </button>
+                <button onclick="switchTab('jije')" class="btn-press px-3 py-2 rounded-xl bg-white/10 text-white text-xs font-bold border border-white/15">
+                  Ver agenda
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Reproductor en Vivo (Sin botón de Check-in) -->
+          <section class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-base font-black text-ink tracking-tight">Transmisión en Vivo</h2>
+              <div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-surface-alt border border-surface-border">
+                <span class="relative w-2 h-2 rounded-full bg-accent-magenta live-dot"></span>
+                <span id="stream-viewer-counter" class="text-[11px] font-bold text-ink">${streamViewerCount} en línea</span>
+              </div>
+            </div>
+
+            <div class="relative rounded-3xl overflow-hidden border border-surface-border bg-ink text-white">
+              <div class="aspect-video relative flex flex-col justify-between p-4">
+                <!-- Gráfica minimalista de fondo -->
+                <svg class="absolute inset-0 w-full h-full opacity-35 pointer-events-none" viewBox="0 0 400 225">
+                  <circle cx="320" cy="60" r="48" fill="none" stroke="#69C5DC" stroke-width="1.5"/>
+                  <circle cx="80" cy="175" r="65" fill="none" stroke="#EC701D" stroke-width="1.5"/>
+                  <line x1="0" y1="112" x2="400" y2="112" stroke="#FFFFFF" stroke-width="0.5" stroke-dasharray="4 4"/>
+                </svg>
+
+                <div class="relative z-10 flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded-lg bg-accent-magenta text-white text-[10px] font-black uppercase tracking-wider">
+                    ● EN VIVO · AUDITORIO PRINCIPAL
+                  </span>
+                  <span class="px-2 py-0.5 rounded-md bg-white/10 text-white/80 text-[10px] font-bold">
+                    HD
+                  </span>
+                </div>
+
+                <div class="relative z-10 my-auto">
+                  <span class="text-[10px] font-black uppercase tracking-widest text-accent-cyan">Panel Tech & Startups</span>
+                  <h3 class="text-base font-black text-white leading-snug mt-0.5">
+                    Inteligencia Artificial aplicada a problemas reales
+                  </h3>
+                  <p class="text-xs text-white/70 mt-0.5">Kinetix AI Labs · Bastión AI · LinguaWave</p>
+                </div>
+
+                <div class="relative z-10 flex items-center justify-between text-[11px] text-white/70 pt-2 border-t border-white/10">
+                  <span>Bloque 11:00 – 12:15 hs</span>
+                  <span id="stream-reaction-count" class="font-bold text-accent-lime">${appState.streamReactions} aplausos enviados</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reacciones rápidas en vivo -->
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="sendStreamReaction('👏 Aplauso')" class="btn-press py-2.5 px-3 rounded-2xl minimal-card text-xs font-bold text-ink flex items-center justify-center gap-1.5 hover:border-ink">
+                <span>👏</span> Aplaudir
+              </button>
+              <button onclick="sendStreamReaction('💡 Gran idea')" class="btn-press py-2.5 px-3 rounded-2xl minimal-card text-xs font-bold text-ink flex items-center justify-center gap-1.5 hover:border-ink">
+                <span>💡</span> Gran idea
+              </button>
+              <button onclick="sendStreamReaction('🚀 Vamos!')" class="btn-press py-2.5 px-3 rounded-2xl minimal-card text-xs font-bold text-ink flex items-center justify-center gap-1.5 hover:border-ink">
+                <span>🚀</span> Impulso
+              </button>
+            </div>
+          </section>
+
+          <!-- Chat en Vivo Minimalista -->
+          <section class="minimal-card rounded-3xl p-4 flex flex-col h-60">
+            <div class="flex items-center justify-between pb-2.5 border-b border-surface-border">
+              <h3 class="text-xs font-black uppercase tracking-wider text-ink">Chat de la comunidad</h3>
+              <span class="text-[11px] font-bold text-accent-orange">● Activo</span>
+            </div>
+
+            <div id="stream-chat-list" class="flex-1 overflow-y-auto no-scrollbar py-2.5 space-y-2 text-xs">
+              ${appState.chatMessages.map(m => `
+                <div class="leading-relaxed">
+                  <span class="font-black ${m.isMod ? 'text-accent-magenta' : m.isMe ? 'text-accent-orange' : 'text-ink'}">${m.user}:</span>
+                  <span class="text-ink-muted ml-1">${m.text}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <form onsubmit="submitStreamChat(event)" class="flex gap-2 pt-2 border-t border-surface-border">
+              <input id="stream-chat-input" type="text" placeholder="Comentá sobre el panel..." maxlength="90"
+                     class="flex-1 bg-surface-alt border border-surface-border rounded-xl px-3 py-2 text-xs text-ink placeholder-ink-subtle focus:outline-none focus:border-ink" />
+              <button type="submit" class="btn-press px-3.5 py-2 rounded-xl bg-ink text-white font-bold text-xs">
+                Enviar
+              </button>
+            </form>
+          </section>
+        </div>
+      `;
+    }
+
+    function sendStreamReaction(label) {
+      appState.streamReactions++;
+      saveState();
+      const counter = document.getElementById('stream-reaction-count');
+      if (counter) counter.textContent = `${appState.streamReactions} aplausos enviados`;
+      showToast(label, 'Enviado al escenario', '#0D0D0D', '#FFFFFF');
+    }
+
+    function submitStreamChat(e) {
+      e.preventDefault();
+      const input = document.getElementById('stream-chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appState.chatMessages.push({ user: appState.userName.split(' ')[0], text, isMe: true });
+      if (appState.chatMessages.length > 25) appState.chatMessages.shift();
+      saveState();
+      input.value = '';
+      renderCurrentTab();
+      const list = document.getElementById('stream-chat-list');
+      if (list) list.scrollTop = list.scrollHeight;
+    }
+
+    function startLiveSimulation() {
+      clearInterval(streamInterval);
+      streamInterval = setInterval(() => {
+        streamViewerCount += Math.floor(Math.random() * 7) - 3;
+        if (streamViewerCount < 510) streamViewerCount = 528;
+
+        const msg = STREAM_MESSAGES_POOL[Math.floor(Math.random() * STREAM_MESSAGES_POOL.length)];
+        appState.chatMessages.push({ user: msg.user, text: msg.text, isMod: false });
+        if (appState.chatMessages.length > 25) appState.chatMessages.shift();
+        saveState();
+
+        if (currentTab === 'streaming') {
+          const vEl = document.getElementById('stream-viewer-counter');
+          if (vEl) vEl.textContent = `${streamViewerCount} en línea`;
+          const list = document.getElementById('stream-chat-list');
+          if (list) {
+            list.innerHTML = appState.chatMessages.map(m => `
+              <div class="leading-relaxed">
+                <span class="font-black ${m.isMod ? 'text-accent-magenta' : m.isMe ? 'text-accent-orange' : 'text-ink'}">${m.user}:</span>
+                <span class="text-ink-muted ml-1">${m.text}</span>
+              </div>
+            `).join('');
+            list.scrollTop = list.scrollHeight;
+          }
+        }
+      }, 6500);
+    }
+
+    // =========================================================================
+    // 6. PANTALLA 2: PROYECTOS (STARTUPS Y TECNOLOGÍA)
+    // =========================================================================
+
+    function renderProyectosScreen() {
+      const lvl = getLevelInfo(appState.xp);
+      const totalProjects = PROJECTS_DATA.length;
+      const readCount = appState.readProjects.length;
+      const connCount = appState.connectedProjects.length;
+
+      // Ordenar priorizando intereses seleccionados en Perfil
+      let sortedProjects = [...PROJECTS_DATA].sort((a, b) => {
+        const aInterest = appState.interests.includes(a.category) ? 1 : 0;
+        const bInterest = appState.interests.includes(b.category) ? 1 : 0;
+        if (aInterest !== bInterest) return bInterest - aInterest;
+        const aConn = appState.connectedProjects.includes(a.id) ? 1 : 0;
+        const bConn = appState.connectedProjects.includes(b.id) ? 1 : 0;
+        return aConn - bConn;
+      });
+
+      if (projectFilter === 'unread') {
+        sortedProjects = sortedProjects.filter(p => !appState.readProjects.includes(p.id));
+      } else if (projectFilter === 'connected') {
+        sortedProjects = sortedProjects.filter(p => appState.connectedProjects.includes(p.id));
+      } else if (projectFilter !== 'all') {
+        sortedProjects = sortedProjects.filter(p => p.category === projectFilter);
+      }
+
+      return `
+        <div class="p-5 space-y-5">
+          <header class="flex items-center justify-between pt-1">
+            <div>
+              <p class="text-[11px] font-black uppercase tracking-widest text-ink-subtle">Ecosistema Emprendedor</p>
+              <h1 class="text-2xl font-black text-ink tracking-tight mt-0.5">Proyectos & Startups</h1>
+            </div>
+            <span class="text-xs font-black px-3 py-1.5 rounded-full bg-ink text-white">
+              Nivel ${lvl.level}
+            </span>
+          </header>
+
+          <!-- Barra compacta de progreso del recorrido -->
+          <section class="minimal-card-alt rounded-2xl p-4 space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-ink">Progreso de Nivel · ${lvl.currentLevelXp}/${lvl.xpNeededForNext} XP</span>
+              <span class="font-black text-accent-magenta">${lvl.progressPct}%</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-white border border-surface-border overflow-hidden">
+              <div class="h-full transition-all duration-500" style="width: ${lvl.progressPct}%; background: linear-gradient(90deg, #E62987, #EC701D, #C6D300, #69C5DC);"></div>
+            </div>
+            <div class="flex items-center justify-between pt-1 text-[11px] text-ink-muted font-bold">
+              <span>${readCount} de ${totalProjects} pitches leídos</span>
+              <span class="text-ink">● ${connCount} conexiones validadas</span>
+            </div>
+          </section>
+
+          <!-- Filtros horizontales por vertical -->
+          <section class="space-y-3">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              <button onclick="setProjectFilter('all')" class="btn-press shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all ${projectFilter === 'all' ? 'bg-ink text-white border-ink' : 'bg-white text-ink-muted border-surface-border hover:border-ink'}">
+                Todos (${totalProjects})
+              </button>
+              <button onclick="setProjectFilter('unread')" class="btn-press shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all ${projectFilter === 'unread' ? 'bg-accent-magenta text-white border-accent-magenta' : 'bg-white text-ink-muted border-surface-border hover:border-ink'}">
+                Sin explorar
+              </button>
+              <button onclick="setProjectFilter('connected')" class="btn-press shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all ${projectFilter === 'connected' ? 'bg-accent-lime text-ink border-accent-lime' : 'bg-white text-ink-muted border-surface-border hover:border-ink'}">
+                ✓ Conectados
+              </button>
+              ${CATEGORIES.map(c => `
+                <button onclick="setProjectFilter('${c.id}')" class="btn-press shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all ${projectFilter === c.id ? 'bg-ink text-white border-ink' : 'bg-white text-ink-muted border-surface-border hover:border-ink'}">
+                  ${c.short}
+                </button>
+              `).join('')}
+            </div>
+
+            ${sortedProjects.length === 0 ? `
+              <div class="minimal-card-alt rounded-3xl p-8 text-center my-4">
+                <p class="text-sm font-black text-ink">No hay proyectos en esta categoría</p>
+                <p class="text-xs text-ink-muted mt-1">Cambiá el filtro para seguir recorriendo los stands.</p>
+                <button onclick="setProjectFilter('all')" class="btn-press mt-4 px-4 py-2 rounded-xl bg-ink text-white text-xs font-bold">
+                  Ver todos los proyectos
+                </button>
+              </div>
+            ` : `
+              <div class="space-y-3">
+                ${sortedProjects.map(p => renderProjectCard(p)).join('')}
+              </div>
+            `}
+          </section>
+        </div>
+      `;
+    }
+
+    function setProjectFilter(filterVal) {
+      projectFilter = filterVal;
+      renderCurrentTab();
+    }
+
+    function renderProjectCard(project) {
+      const meta = getCategoryMeta(project.category);
+      const isRead = appState.readProjects.includes(project.id);
+      const isConnected = appState.connectedProjects.includes(project.id);
+      const isPreferred = appState.interests.includes(project.category);
+
+      return `
+        <article onclick="openProjectModal('${project.id}')" class="btn-press minimal-card rounded-2xl p-3.5 cursor-pointer hover:border-ink">
+          <div class="flex gap-3.5">
+            <div class="w-24 shrink-0">
+              ${getProjectThumbnailSvg(project, false)}
+            </div>
+            <div class="flex-1 min-w-0 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-1.5">
+                  <span class="text-[10px] font-black px-2 py-0.5 rounded-md truncate" style="background:${meta.color}; color:${meta.textOnBg}">
+                    ${meta.short}
+                  </span>
+                  ${isConnected ? `
+                    <span class="shrink-0 text-[10px] font-black px-2 py-0.5 rounded-full bg-accent-lime text-ink">
+                      ✓ PIN OK
+                    </span>
+                  ` : isRead ? `
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full bg-surface-alt text-ink-muted">
+                      Leído
+                    </span>
+                  ` : isPreferred ? `
+                    <span class="shrink-0 text-[10px] font-black text-accent-magenta">★ Interés</span>
+                  ` : ''}
+                </div>
+                <h3 class="text-sm font-black text-ink leading-snug mt-1.5 line-clamp-2">${project.title}</h3>
+                <p class="text-[11px] text-ink-muted mt-0.5 truncate">${project.team} · ${project.stage.split('·')[0]}</p>
+              </div>
+
+              <div class="flex items-center justify-between mt-2 pt-2 border-t border-surface-border text-[11px]">
+                <span class="text-ink-subtle font-bold">${project.readTime} lectura</span>
+                <span class="font-black text-ink">+${project.readXp + project.pinXp} XP</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    // =========================================================================
+    // 7. VISTA DE PROYECTO (LECTURA + TRIVIA + VALIDACIÓN PIN STAND)
+    // =========================================================================
+
+    function openProjectModal(projectId) {
+      const project = PROJECTS_DATA.find(p => p.id === projectId);
+      if (!project) return;
+
+      activeProjectId = projectId;
+      readingSecondsElapsed = 0;
+      hasScrolledToBottom = false;
+      triviaAnswersState = {};
+
+      const modal = document.getElementById('project-modal');
+      document.getElementById('modal-project-stand-badge').textContent = `STAND ${project.stand}`;
+      document.getElementById('reading-progress-bar').style.width = '0%';
+
+      const isAlreadyRead = appState.readProjects.includes(project.id);
+      const timerPill = document.getElementById('modal-read-timer-pill');
+      if (isAlreadyRead) {
+        timerPill.textContent = '✓ Pitch leído';
+        timerPill.className = 'text-[11px] font-black px-2.5 py-1 rounded-full bg-accent-lime text-ink';
+      } else {
+        timerPill.textContent = 'Leé hasta el final (3s)';
+        timerPill.className = 'text-[11px] font-bold px-2.5 py-1 rounded-full bg-surface-alt text-ink-muted border border-surface-border';
+      }
+
+      renderProjectModalContent();
+      modal.classList.remove('hidden');
+
+      const scrollEl = document.getElementById('project-modal-scroll');
+      scrollEl.scrollTop = 0;
+
+      clearInterval(readingTimerInterval);
+      if (!isAlreadyRead) {
+        readingTimerInterval = setInterval(() => {
+          readingSecondsElapsed++;
+          checkReadingCompletion();
+        }, 1000);
+      }
+
+      scrollEl.onscroll = () => {
+        const maxScroll = scrollEl.scrollHeight - scrollEl.clientHeight;
+        const pct = maxScroll <= 0 ? 100 : Math.min(100, Math.round((scrollEl.scrollTop / maxScroll) * 100));
+        document.getElementById('reading-progress-bar').style.width = `${pct}%`;
+
+        if (pct >= 88) {
+          hasScrolledToBottom = true;
+          checkReadingCompletion();
+        }
+      };
+
+      setTimeout(() => {
+        if (scrollEl.scrollHeight <= scrollEl.clientHeight + 20) {
+          document.getElementById('reading-progress-bar').style.width = '100%';
+          hasScrolledToBottom = true;
+        }
+      }, 150);
+    }
+
+    function checkReadingCompletion() {
+      if (!activeProjectId) return;
+      const project = PROJECTS_DATA.find(p => p.id === activeProjectId);
+      if (!project) return;
+      if (appState.readProjects.includes(project.id)) return;
+
+      const timerPill = document.getElementById('modal-read-timer-pill');
+      if (!hasScrolledToBottom && readingSecondsElapsed >= 3) {
+        timerPill.textContent = 'Bajá hasta el final ↓';
+      } else if (hasScrolledToBottom && readingSecondsElapsed < 3) {
+        timerPill.textContent = `Leyendo... (${3 - readingSecondsElapsed}s)`;
+      }
+
+      if (hasScrolledToBottom && readingSecondsElapsed >= 3) {
+        clearInterval(readingTimerInterval);
+        appState.readProjects.push(project.id);
+        timerPill.textContent = '✓ Pitch leído';
+        timerPill.className = 'text-[11px] font-black px-2.5 py-1 rounded-full bg-accent-lime text-ink';
+        addXp(project.readXp, 'Pitch leído');
+        renderProjectModalContent();
+      }
+    }
+
+    function closeProjectModal() {
+      clearInterval(readingTimerInterval);
+      activeProjectId = null;
+      document.getElementById('project-modal').classList.add('hidden');
+      renderCurrentTab();
+    }
+
+    function renderProjectModalContent() {
+      const project = PROJECTS_DATA.find(p => p.id === activeProjectId);
+      if (!project) return;
+
+      const meta = getCategoryMeta(project.category);
+      const isRead = appState.readProjects.includes(project.id);
+      const isConnected = appState.connectedProjects.includes(project.id);
+      const isTriviaDone = appState.completedTrivias.includes(project.id);
+
+      const container = document.getElementById('project-modal-scroll');
+      container.innerHTML = `
+        <div>
+          ${getProjectThumbnailSvg(project, true)}
+          <div class="flex items-center gap-2 mt-4">
+            <span class="text-[11px] font-black px-2.5 py-1 rounded-md" style="background:${meta.color}; color:${meta.textOnBg}">
+              ${project.category}
+            </span>
+            <span class="text-xs text-ink-subtle font-bold">· ${project.readTime}</span>
+          </div>
+          <h1 class="text-2xl font-black text-ink mt-2 leading-tight tracking-tight">${project.title}</h1>
+          <p class="text-xs font-bold text-ink-muted mt-1">${project.team} · ${project.stage}</p>
+        </div>
+
+        <!-- Pitch Ejecutivo -->
+        <div class="p-4 rounded-2xl bg-surface-alt border border-surface-border text-sm text-ink font-bold leading-relaxed">
+          ${project.summary}
+        </div>
+
+        <!-- Cuerpo de lectura -->
+        <div class="space-y-4 text-sm text-ink-soft leading-relaxed">
+          ${project.paragraphs.map(p => `<p>${p}</p>`).join('')}
+        </div>
+
+        <!-- Estado de recompensa por lectura -->
+        <div class="p-4 rounded-2xl border ${isRead ? 'bg-accent-lime/20 border-accent-lime' : 'bg-surface-alt border-surface-border'} flex items-center justify-between">
+          <div>
+            <p class="text-xs font-black text-ink">
+              ${isRead ? '✓ Recompensa de lectura acreditada' : 'Completá la lectura para sumar XP'}
+            </p>
+            <p class="text-[11px] text-ink-muted mt-0.5">
+              ${isRead ? `Sumaste +${project.readXp} XP por analizar esta startup.` : `Leé hasta el final para ganar +${project.readXp} XP.`}
+            </p>
+          </div>
+          <span class="font-black text-sm text-ink">+${project.readXp} XP</span>
+        </div>
+
+        <!-- BLOQUE DE VALIDACIÓN DE PIN EN STAND -->
+        <section class="rounded-3xl p-5 bg-ink text-white space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-accent-cyan text-ink">
+              Conexión Presencial
+            </span>
+            <span class="text-sm font-black text-accent-lime">+${project.pinXp} XP</span>
+          </div>
+
+          ${isConnected ? `
+            <h3 class="text-lg font-black text-white">✓ Conexión validada en Stand ${project.stand}</h3>
+            <p class="text-xs text-white/75">Datos directos del equipo emprendedor desbloqueados:</p>
+
+            <div class="mt-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 space-y-2 text-xs">
+              <div class="flex justify-between">
+                <span class="text-white/60">Founder:</span>
+                <span class="font-bold text-white">${project.contact.lead}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-white/60">Rol:</span>
+                <span class="text-white/90">${project.contact.role}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-white/60">Email:</span>
+                <span class="font-mono text-accent-cyan">${project.contact.email}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-white/60">LinkedIn:</span>
+                <span class="font-bold text-accent-lime">${project.contact.handle}</span>
+              </div>
+            </div>
+          ` : `
+            <h3 class="text-lg font-black text-white">¿Estás en el Stand ${project.stand}?</h3>
+            <p class="text-xs text-white/75 leading-relaxed">
+              Conversá con <strong class="text-white">${project.team}</strong>, pediles su PIN de 4 dígitos y validá la conexión para guardar su contacto y ganar XP.
+            </p>
+            <button onclick="openPinModal('${project.id}')" class="btn-press mt-2 w-full py-3.5 rounded-2xl bg-accent-lime text-ink font-black text-sm flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Validar conexión en stand
+            </button>
+          `}
+        </section>
+
+        <!-- BLOQUE DE TRIVIA RÁPIDA -->
+        <section class="minimal-card rounded-3xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-accent-magenta">Trivia Rápida</span>
+              <h3 class="text-base font-black text-ink">Validá tu comprensión</h3>
+            </div>
+            <span class="text-xs font-black px-2.5 py-1 rounded-xl ${isTriviaDone ? 'bg-accent-lime text-ink' : 'bg-surface-alt text-ink'}">
+              ${isTriviaDone ? '✓ +60 XP' : '+60 XP'}
+            </span>
+          </div>
+
+          ${isTriviaDone ? `
+            <div class="p-3.5 rounded-2xl bg-surface-alt border border-surface-border text-xs text-ink font-bold">
+              ✓ Completaste correctamente la trivia de este emprendimiento.
+            </div>
+          ` : `
+            <div class="space-y-4">
+              ${project.trivia.map((item, qIdx) => {
+                const chosen = triviaAnswersState[qIdx];
+                return `
+                  <div class="space-y-2">
+                    <p class="text-xs font-bold text-ink">${qIdx + 1}. ${item.q}</p>
+                    <div class="space-y-1.5">
+                      ${item.options.map((opt, optIdx) => {
+                        let btnClass = 'bg-surface-alt border-surface-border text-ink hover:border-ink';
+                        if (chosen !== undefined) {
+                          if (optIdx === item.answer) {
+                            btnClass = 'bg-accent-lime border-ink text-ink font-black';
+                          } else if (optIdx === chosen && chosen !== item.answer) {
+                            btnClass = 'bg-accent-magenta border-accent-magenta text-white font-bold';
+                          }
+                        }
+                        return `
+                          <button onclick="answerTrivia('${project.id}', ${qIdx}, ${optIdx})" class="btn-press w-full text-left px-3.5 py-2.5 rounded-xl border text-xs transition-all ${btnClass}">
+                            ${opt}
+                          </button>
+                        `;
+                      }).join('')}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `}
+        </section>
+      `;
+    }
+
+    function answerTrivia(projectId, qIdx, optIdx) {
+      const project = PROJECTS_DATA.find(p => p.id === projectId);
+      if (!project || appState.completedTrivias.includes(projectId)) return;
+
+      triviaAnswersState[qIdx] = optIdx;
+      renderProjectModalContent();
+
+      const allAnswered = project.trivia.every((_, idx) => triviaAnswersState[idx] !== undefined);
+      const allCorrect = project.trivia.every((q, idx) => triviaAnswersState[idx] === q.answer);
+
+      if (allAnswered && allCorrect) {
+        appState.completedTrivias.push(projectId);
+        addXp(60, 'Trivia completada');
+        setTimeout(() => renderProjectModalContent(), 350);
+      }
+    }
+
+    // =========================================================================
+    // 8. MODAL TECLADO NUMÉRICO PIN DE STAND
+    // =========================================================================
+
+    function openPinModal(projectId) {
+      const project = PROJECTS_DATA.find(p => p.id === projectId);
+      if (!project) return;
+      pinTargetProjectId = projectId;
+      currentPinDigits = '';
+      document.getElementById('pin-stand-label').textContent = `STAND ${project.stand}`;
+      document.getElementById('pin-demo-hint').textContent = project.pin;
+      document.getElementById('pin-error-msg').textContent = '';
+      updatePinBoxesUI();
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.add('hidden');
+      pinTargetProjectId = null;
+      currentPinDigits = '';
+    }
+
+    function updatePinBoxesUI() {
+      const boxes = document.querySelectorAll('.pin-box');
+      boxes.forEach((box, idx) => {
+        const digit = currentPinDigits[idx] || '';
+        box.textContent = digit;
+        if (digit) {
+          box.classList.add('border-ink', 'bg-white');
+          box.classList.remove('border-surface-border', 'bg-surface-alt');
+        } else {
+          box.classList.remove('border-ink', 'bg-white');
+          box.classList.add('border-surface-border', 'bg-surface-alt');
+        }
+      });
+    }
+
+    function pressPinDigit(digit) {
+      if (currentPinDigits.length >= 4) return;
+      currentPinDigits += digit;
+      document.getElementById('pin-error-msg').textContent = '';
+      updatePinBoxesUI();
+
+      if (currentPinDigits.length === 4) {
+        validateStandPin();
+      }
+    }
+
+    function backspacePinDigit() {
+      currentPinDigits = currentPinDigits.slice(0, -1);
+      document.getElementById('pin-error-msg').textContent = '';
+      updatePinBoxesUI();
+    }
+
+    function clearPinInput() {
+      currentPinDigits = '';
+      document.getElementById('pin-error-msg').textContent = '';
+      updatePinBoxesUI();
+    }
+
+    function validateStandPin() {
+      const project = PROJECTS_DATA.find(p => p.id === pinTargetProjectId);
+      if (!project) return;
+
+      if (currentPinDigits === project.pin) {
+        if (!appState.connectedProjects.includes(project.id)) {
+          appState.connectedProjects.push(project.id);
+          if (!appState.readProjects.includes(project.id)) {
+            appState.readProjects.push(project.id);
+          }
+          addXp(project.pinXp, `Stand ${project.stand} conectado`);
+        }
+        closePinModal();
+        renderProjectModalContent();
+      } else {
+        const card = document.getElementById('pin-modal-card');
+        card.classList.remove('animate-shake');
+        void card.offsetWidth;
+        card.classList.add('animate-shake');
+        document.getElementById('pin-error-msg').textContent = 'PIN incorrecto. Verificá el código con el stand.';
+        setTimeout(() => {
+          currentPinDigits = '';
+          updatePinBoxesUI();
+        }, 450);
+      }
+    }
+
+    // =========================================================================
+    // 9. PANTALLA 3: DESAFÍOS, INSIGNIAS Y COMPARTIR LOGROS EN REDES (SIN RANKING)
+    // =========================================================================
+
+    function renderDesafiosScreen() {
+      const lvl = getLevelInfo(appState.xp);
+      const unlockedCount = Object.keys(appState.unlockedBadges).length;
+
+      return `
+        <div class="p-5 space-y-6">
+          <header>
+            <p class="text-[11px] font-black uppercase tracking-widest text-accent-magenta">Metas & Reconocimientos</p>
+            <h1 class="text-2xl font-black text-ink tracking-tight mt-0.5">Desafíos y Logros</h1>
+          </header>
+
+          <!-- Lista de Desafíos del Evento -->
+          <section class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-black uppercase tracking-wider text-ink">Misiones Activas</h2>
+              <span class="text-xs font-bold text-ink-muted">${appState.claimedChallenges.length}/${CHALLENGES_DATA.length} completadas</span>
+            </div>
+
+            <div class="space-y-3">
+              ${CHALLENGES_DATA.map(ch => {
+                const isClaimed = appState.claimedChallenges.includes(ch.id);
+                const prog = ch.getProgress(appState);
+                const pct = Math.min(100, Math.round((prog.current / prog.target) * 100));
+                const isReady = prog.current >= prog.target && !isClaimed;
+
+                return `
+                  <div class="minimal-card rounded-2xl p-4 ${isClaimed ? 'opacity-60 bg-surface-alt' : isReady ? 'border-ink border-2' : ''}">
+                    <div class="flex items-start justify-between gap-3">
+                      <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                          <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${ch.accent}"></span>
+                          <h3 class="text-sm font-black text-ink">${ch.title}</h3>
+                          <span class="text-[11px] font-black text-ink-muted">+${ch.xpReward} XP</span>
+                        </div>
+                        <p class="text-xs text-ink-muted mt-1 leading-relaxed">${ch.desc}</p>
+                      </div>
+
+                      ${isClaimed ? `
+                        <span class="shrink-0 text-[11px] font-black px-2.5 py-1 rounded-xl bg-accent-lime text-ink">✓ Listo</span>
+                      ` : isReady ? `
+                        <button onclick="claimChallenge('${ch.id}')" class="btn-press shrink-0 px-3.5 py-2 rounded-xl bg-ink text-white font-black text-xs">
+                          Reclamar
+                        </button>
+                      ` : `
+                        <span class="shrink-0 text-xs font-black text-ink bg-surface-alt px-2.5 py-1 rounded-xl border border-surface-border">
+                          ${prog.current}/${prog.target}
+                        </span>
+                      `}
+                    </div>
+
+                    <div class="w-full h-1.5 rounded-full bg-surface-alt overflow-hidden mt-3">
+                      <div class="h-full rounded-full transition-all duration-500" style="width: ${pct}%; background-color: ${isClaimed ? '#0D0D0D' : ch.accent};"></div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </section>
+
+          <!-- Cuadrícula de Insignias -->
+          <section class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-black uppercase tracking-wider text-ink">Insignias JIJE</h2>
+              <span class="text-xs font-black text-ink">${unlockedCount}/${BADGES_DATA.length}</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2.5">
+              ${BADGES_DATA.map(badge => {
+                const unlockedDate = appState.unlockedBadges[badge.id];
+                return `
+                  <div class="minimal-card rounded-2xl p-3 text-center flex flex-col items-center justify-between ${unlockedDate ? 'border-ink' : 'opacity-45 bg-surface-alt'}">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-2" style="background:${unlockedDate ? badge.accent : '#E5E5E7'}; color:${unlockedDate && (badge.accent === '#E62987' || badge.accent === '#EC701D') ? '#FFFFFF' : '#0D0D0D'};">
+                      ${getBadgeSvg(badge.icon)}
+                    </div>
+                    <p class="text-[11px] font-black text-ink leading-tight">${badge.name}</p>
+                    <p class="text-[9px] text-ink-muted mt-1 line-clamp-2">${unlockedDate ? unlockedDate : badge.desc}</p>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </section>
+
+          <!-- Compartir mis logros en LinkedIn y otras redes (Reemplaza al Ranking en vivo) -->
+          <section class="rounded-3xl bg-ink text-white p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-widest text-accent-cyan">Marca Personal & Networking</span>
+                <h2 class="text-lg font-black text-white mt-0.5">Compartí tus logros en redes</h2>
+              </div>
+              <div class="flex gap-1">
+                <span class="w-2 h-2 rounded-full bg-accent-magenta"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-lime"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-orange"></span>
+                <span class="w-2 h-2 rounded-full bg-accent-cyan"></span>
+              </div>
+            </div>
+
+            <!-- Tarjeta de vista previa compartible -->
+            <div class="rounded-2xl bg-white text-ink p-4 space-y-2.5">
+              <div class="flex items-center justify-between border-b border-surface-border pb-2">
+                <span class="text-[10px] font-black uppercase tracking-widest text-ink">JIJE · REPORTE DE PARTICIPACIÓN</span>
+                <span class="text-[10px] font-black px-2 py-0.5 rounded bg-accent-lime text-ink">NIVEL ${lvl.level}</span>
+              </div>
+              <p class="text-sm font-black text-ink">${appState.userName}</p>
+              <p class="text-xs text-ink-muted leading-relaxed">
+                Conecté con <strong class="text-ink">${appState.connectedProjects.length} startups</strong>, analicé <strong class="text-ink">${appState.readProjects.length} proyectos</strong> y desbloqueé <strong class="text-ink">${unlockedCount} insignias</strong> en la Jornada de Innovación, Jóvenes y Emprendedurismo.
+              </p>
+            </div>
+
+            <!-- Botones de redes sociales -->
+            <div class="grid grid-cols-2 gap-2.5">
+              <button onclick="shareAchievement('LinkedIn')" class="btn-press py-3 px-3 rounded-xl bg-accent-cyan text-ink font-black text-xs flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                LinkedIn
+              </button>
+              <button onclick="shareAchievement('X / Twitter')" class="btn-press py-3 px-3 rounded-xl bg-white text-ink font-black text-xs flex items-center justify-center gap-2">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                X / Twitter
+              </button>
+              <button onclick="shareAchievement('Instagram Stories')" class="btn-press py-3 px-3 rounded-xl bg-accent-magenta text-white font-black text-xs flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                Instagram
+              </button>
+              <button onclick="copyAchievementSummary()" class="btn-press py-3 px-3 rounded-xl bg-white/12 text-white border border-white/20 font-bold text-xs flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copiar resumen
+              </button>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function shareAchievement(networkName) {
+      showToast(`Listo para ${networkName}`, 'Tarjeta de logros generada', '#69C5DC', '#0D0D0D');
+    }
+
+    function copyAchievementSummary() {
+      const lvl = getLevelInfo(appState.xp);
+      const text = `¡Participando en JIJE 2026! Alcancé el Nivel ${lvl.level} (${appState.xp} XP), exploré ${appState.readProjects.length} startups tecnológicas y validé ${appState.connectedProjects.length} conexiones en stands. #JIJE #Emprendedurismo #Tecnología`;
+      const tempInput = document.createElement('textarea');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast('Resumen copiado', 'Pegalo en tu publicación', '#C6D300', '#0D0D0D');
+      } catch (err) {
+        showToast('Tarjeta lista', 'Compartí tu progreso JIJE', '#C6D300', '#0D0D0D');
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    function claimChallenge(challengeId) {
+      const ch = CHALLENGES_DATA.find(c => c.id === challengeId);
+      if (!ch || appState.claimedChallenges.includes(challengeId)) return;
+
+      const prog = ch.getProgress(appState);
+      if (prog.current < prog.target) return;
+
+      appState.claimedChallenges.push(challengeId);
+      addXp(ch.xpReward, `Desafío: ${ch.title}`);
+      renderCurrentTab();
+
+      triggerCelebration(
+        '¡DESAFÍO COMPLETADO!',
+        ch.title,
+        `Sumaste +${ch.xpReward} XP por completar este objetivo en JIJE.`,
+        'challenge'
+      );
+    }
+
+    function getBadgeSvg(iconName) {
+      const icons = {
+        eye: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
+        handshake: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>',
+        network: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="8.59" y1="16.51" x2="10.42" y2="7.49"/><line x1="15.41" y1="16.51" x2="13.58" y2="7.49"/></svg>',
+        award: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>',
+        bell: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+        zap: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
+      };
+      return icons[iconName] || icons.award;
+    }
+
+    // =========================================================================
+    // 10. PANTALLA 4: JIJE (INFO GENERAL DEL EVENTO + PROGRAMA DE UN SOLO DÍA)
+    // =========================================================================
+
+    function renderJijeScreen() {
+      const stages = ['Todas', 'Auditorio Principal', 'Escenario Pitch', 'Sala Taller'];
+      const filteredAgenda = AGENDA_DATA.filter(item => {
+        return agendaStageFilter === 'Todas' || item.stage === agendaStageFilter;
+      });
+
+      return `
+        <div class="p-5 space-y-6">
+          <!-- Cabecera e Historia / Info General de JIJE -->
+          <header class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-accent-magenta"></span>
+              <span class="w-3 h-3 rounded-full bg-accent-lime"></span>
+              <span class="w-3 h-3 rounded-full bg-accent-orange"></span>
+              <span class="w-3 h-3 rounded-full bg-accent-cyan"></span>
+            </div>
+            <h1 class="text-3xl font-black text-ink tracking-tight">JIJE</h1>
+            <p class="text-xs font-black uppercase tracking-wider text-ink-muted">
+              Jornada de Innovación, Jóvenes y Emprendedurismo
+            </p>
+          </header>
+
+          <!-- Bloque Editorial: Historia y Propósito -->
+          <section class="minimal-card-alt rounded-3xl p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-ink text-white">
+                Sobre el encuentro
+              </span>
+              <span class="text-xs font-bold text-ink-muted">Edición Anual</span>
+            </div>
+            <p class="text-xs text-ink-soft leading-relaxed">
+              Nacida en 2018 como un punto de encuentro universitario y tecnológico, <strong>JIJE</strong> se consolidó como el espacio de referencia donde jóvenes fundadores, desarrolladores, inversores y líderes de innovación conectan cara a cara durante una jornada intensiva.
+            </p>
+            <p class="text-xs text-ink-muted leading-relaxed">
+              Nuestro propósito es acelerar proyectos de base tecnológica con impacto real, fomentando redes genuinas de colaboración entre talento emergente y el ecosistema emprendedor.
+            </p>
+            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-surface-border text-center">
+              <div class="p-2 rounded-xl bg-white border border-surface-border">
+                <p class="text-sm font-black text-ink">26</p>
+                <p class="text-[10px] font-bold text-ink-muted">Startups</p>
+              </div>
+              <div class="p-2 rounded-xl bg-white border border-surface-border">
+                <p class="text-sm font-black text-ink">1 Día</p>
+                <p class="text-[10px] font-bold text-ink-muted">Jornada Full</p>
+              </div>
+              <div class="p-2 rounded-xl bg-white border border-surface-border">
+                <p class="text-sm font-black text-ink">3 Salas</p>
+                <p class="text-[10px] font-bold text-ink-muted">En simultáneo</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Programa del Día (Sin selector Día 1 / Día 2, con activar notificaciones) -->
+          <section class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-black text-ink tracking-tight">Programa de la Jornada</h2>
+                <p class="text-[11px] text-ink-muted">Activá notificaciones en las charlas que te interesen</p>
+              </div>
+              <span class="text-[11px] font-black px-2.5 py-1 rounded-full bg-surface-alt border border-surface-border text-ink">
+                ${appState.notifiedSessions.length} alertas
+              </span>
+            </div>
+
+            <!-- Filtro por Sala -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              ${stages.map(st => `
+                <button onclick="setAgendaStage('${st}')" class="btn-press shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold border ${agendaStageFilter === st ? 'bg-ink text-white border-ink' : 'bg-white text-ink-muted border-surface-border hover:border-ink'}">
+                  ${st}
+                </button>
+              `).join('')}
+            </div>
+
+            <!-- Bloques horarios -->
+            <div class="space-y-3">
+              ${filteredAgenda.map(item => {
+                const isNotified = appState.notifiedSessions.includes(item.id);
+
+                return `
+                  <div class="minimal-card rounded-2xl p-4 space-y-3 ${isNotified ? 'border-ink' : ''}">
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-white bg-ink px-2.5 py-1 rounded-lg">${item.time} hs</span>
+                        <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-surface-alt text-ink-muted">${item.stage}</span>
+                      </div>
+                      <span class="text-[10px] font-black uppercase tracking-wider text-accent-orange">${item.type}</span>
+                    </div>
+
+                    <div>
+                      <h3 class="text-sm font-black text-ink leading-snug">${item.title}</h3>
+                      <p class="text-xs text-ink-muted mt-1">${item.speaker}</p>
+                    </div>
+
+                    <div class="pt-2.5 border-t border-surface-border flex items-center justify-between">
+                      <span class="text-[11px] font-bold ${isNotified ? 'text-ink' : 'text-ink-subtle'}">
+                        ${isNotified ? '● Notificación programada 10 min antes' : 'Recordatorio disponible'}
+                      </span>
+
+                      <button onclick="toggleSessionNotification('${item.id}')" class="btn-press flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${isNotified ? 'bg-accent-lime text-ink' : 'bg-surface-alt text-ink border border-surface-border hover:border-ink'}">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="${isNotified ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.3">
+                          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        ${isNotified ? 'Activada' : 'Notificarme'}
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function setAgendaStage(stage) {
+      agendaStageFilter = stage;
+      renderCurrentTab();
+    }
+
+    function toggleSessionNotification(sessionId) {
+      const item = AGENDA_DATA.find(a => a.id === sessionId);
+      if (!item) return;
+
+      if (appState.notifiedSessions.includes(sessionId)) {
+        appState.notifiedSessions = appState.notifiedSessions.filter(id => id !== sessionId);
+        showToast('Alerta desactivada', item.time + ' hs', '#F7F7F8', '#0D0D0D');
+      } else {
+        appState.notifiedSessions.push(sessionId);
+        checkNewBadges();
+        showToast('Notificación activada', `Te avisamos antes de las ${item.time} hs`, '#EC701D', '#FFFFFF');
+      }
+      saveState();
+      renderCurrentTab();
+    }
+
+    // =========================================================================
+    // 11. PANTALLA 5: PERFIL ESTILO LINKEDIN (SIN ESTADÍSTICAS, CONEXIONES E INTERESES TAGS)
+    // =========================================================================
+
+    function renderPerfilScreen() {
+      const connectionsList = PROJECTS_DATA.filter(p => appState.connectedProjects.includes(p.id));
+
+      return `
+        <div class="pb-6">
+          <!-- Encabezado tipo LinkedIn: Banner + Avatar superpuesto -->
+          <div class="relative">
+            <!-- Banner geométrico minimalista -->
+            <div class="h-32 w-full bg-ink relative overflow-hidden">
+              <svg class="w-full h-full" viewBox="0 0 440 130" preserveAspectRatio="xMidYMid slice">
+                <circle cx="370" cy="35" r="46" fill="#E62987"/>
+                <circle cx="315" cy="95" r="32" fill="#69C5DC"/>
+                <rect x="245" y="20" width="38" height="38" rx="8" fill="#C6D300" transform="rotate(15 264 39)"/>
+                <circle cx="215" cy="92" r="18" fill="#EC701D"/>
+              </svg>
+            </div>
+
+            <!-- Foto / Avatar circular superpuesto -->
+            <div class="px-5 flex items-end justify-between -mt-12 relative z-10">
+              <div class="w-24 h-24 rounded-full bg-white p-1 shadow-md border border-surface-border">
+                <div class="w-full h-full rounded-full bg-surface-alt overflow-hidden flex items-center justify-center relative">
+                  <!-- Ilustración avatar profesional minimalista -->
+                  <svg class="w-full h-full" viewBox="0 0 100 100">
+                    <rect width="100" height="100" fill="#F2F2F4"/>
+                    <circle cx="50" cy="38" r="18" fill="#0D0D0D"/>
+                    <path d="M20 88 C20 66, 80 66, 80 88" fill="#0D0D0D"/>
+                    <circle cx="74" cy="26" r="8" fill="#E62987"/>
+                  </svg>
+                </div>
+              </div>
+
+              <button onclick="toggleProfileQr()" class="btn-press px-3.5 py-2 rounded-full bg-white border border-ink text-ink text-xs font-black flex items-center gap-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                ${showQrInProfile ? 'Ocultar QR' : 'Mi Pase QR'}
+              </button>
+            </div>
+          </div>
+
+          <!-- Identidad Profesional (Estilo LinkedIn, sin bloques de estadísticas) -->
+          <div class="px-5 pt-3 space-y-5">
+            <div>
+              <div class="flex items-center gap-2">
+                <h1 class="text-2xl font-black text-ink tracking-tight">${appState.userName}</h1>
+                <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-accent-lime text-ink">Verificada</span>
+              </div>
+              <p class="text-xs font-bold text-ink-soft mt-1 leading-snug">${appState.userHeadline}</p>
+              <p class="text-[11px] text-ink-muted mt-1">${appState.userLocation} · ID ${appState.userCode}</p>
+            </div>
+
+            <!-- QR desplegable opcional para networking presencial -->
+            ${showQrInProfile ? `
+              <div class="minimal-card-alt rounded-2xl p-4 flex items-center justify-between gap-4 animate-pop">
+                <div>
+                  <p class="text-xs font-black text-ink">Credencial de Networking JIJE</p>
+                  <p class="text-[11px] text-ink-muted mt-0.5">Compartí este código con otros asistentes o expositores para intercambiar perfiles.</p>
+                </div>
+                <div class="w-16 h-16 rounded-xl bg-white p-1.5 border border-surface-border shrink-0">
+                  <svg viewBox="0 0 36 36" class="w-full h-full fill-ink">
+                    <rect x="2" y="2" width="10" height="10" rx="1.5"/>
+                    <rect x="4" y="4" width="6" height="6" fill="#FFFFFF"/>
+                    <rect x="5.5" y="5.5" width="3" height="3"/>
+                    <rect x="24" y="2" width="10" height="10" rx="1.5"/>
+                    <rect x="26" y="4" width="6" height="6" fill="#FFFFFF"/>
+                    <rect x="27.5" y="5.5" width="3" height="3"/>
+                    <rect x="2" y="24" width="10" height="10" rx="1.5"/>
+                    <rect x="4" y="26" width="6" height="6" fill="#FFFFFF"/>
+                    <rect x="5.5" y="27.5" width="3" height="3"/>
+                    <rect x="14" y="14" width="8" height="8" rx="1"/>
+                    <rect x="25" y="16" width="4" height="8"/>
+                    <rect x="16" y="26" width="6" height="6"/>
+                  </svg>
+                </div>
+              </div>
+            ` : ''}
+
+            <!-- Etiquetas de Intereses (Chips seleccionables que reordenan Proyectos) -->
+            <section class="minimal-card rounded-2xl p-4 space-y-3">
+              <div>
+                <h2 class="text-xs font-black uppercase tracking-wider text-ink">Intereses & Verticales</h2>
+                <p class="text-[11px] text-ink-muted mt-0.5">Tocá las etiquetas para personalizar el orden de tu feed de Proyectos.</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                ${CATEGORIES.map(c => {
+                  const active = appState.interests.includes(c.id);
+                  return `
+                    <button onclick="toggleInterest('${c.id}')" class="btn-press px-3 py-1.5 rounded-full text-xs font-bold border transition-all flex items-center gap-1.5 ${active ? 'bg-ink text-white border-ink' : 'bg-surface-alt text-ink-muted border-surface-border hover:border-ink'}">
+                      <span class="w-2 h-2 rounded-full" style="background:${c.color}"></span>
+                      ${c.id}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+
+            <!-- Conexiones (Startups y equipos validados con PIN en stand) -->
+            <section class="minimal-card rounded-2xl p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 class="text-xs font-black uppercase tracking-wider text-ink">Conexiones (${connectionsList.length})</h2>
+                  <p class="text-[11px] text-ink-muted">Equipos emprendedores con los que conectaste en stand</p>
+                </div>
+              </div>
+
+              ${connectionsList.length === 0 ? `
+                <div class="p-5 rounded-xl bg-surface-alt text-center">
+                  <p class="text-xs font-bold text-ink">Aún no tenés conexiones registradas</p>
+                  <p class="text-[11px] text-ink-muted mt-1">Visitá un stand en la pestaña Proyectos e ingresá su PIN para sumar tu primera conexión.</p>
+                </div>
+              ` : `
+                <div class="divide-y divide-surface-border">
+                  ${connectionsList.map(p => `
+                    <div class="py-3 first:pt-1 last:pb-1 flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-10 h-10 rounded-full bg-ink text-white font-black text-xs flex items-center justify-center shrink-0">
+                          ${p.contact.lead.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                        </div>
+                        <div class="min-w-0">
+                          <div class="flex items-center gap-1.5">
+                            <p class="text-xs font-black text-ink truncate">${p.contact.lead}</p>
+                            <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-surface-alt text-ink border border-surface-border">${p.stand}</span>
+                          </div>
+                          <p class="text-[11px] text-ink-muted truncate">${p.contact.role} en <strong class="text-ink">${p.team}</strong></p>
+                          <p class="text-[10px] font-mono text-accent-magenta truncate">${p.contact.email}</p>
+                        </div>
+                      </div>
+                      <button onclick="openProjectModal('${p.id}')" class="btn-press shrink-0 text-[11px] font-black px-3 py-1.5 rounded-full border border-ink text-ink hover:bg-ink hover:text-white">
+                        Ver
+                      </button>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </section>
+
+            <!-- Control discreto de demo -->
+            <div class="pt-2 text-center">
+              <button onclick="openResetModal()" class="btn-press text-[11px] font-bold text-ink-subtle hover:text-ink underline underline-offset-4">
+                Configurar o reiniciar datos de demostración
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleProfileQr() {
+      showQrInProfile = !showQrInProfile;
+      renderCurrentTab();
+    }
+
+    function toggleInterest(categoryId) {
+      if (appState.interests.includes(categoryId)) {
+        appState.interests = appState.interests.filter(x => x !== categoryId);
+      } else {
+        appState.interests.push(categoryId);
+      }
+      saveState();
+      renderCurrentTab();
+    }
+
+    function openResetModal() {
+      document.getElementById('reset-modal').classList.remove('hidden');
+    }
+
+    function closeResetModal() {
+      document.getElementById('reset-modal').classList.add('hidden');
+    }
+
+    function resetDemoState(mode) {
+      appState = mode === 'fresh' ? getFreshState() : getSeededState();
+      saveState();
+      closeResetModal();
+      switchTab('streaming');
+      showToast(mode === 'fresh' ? 'Demo reiniciada' : 'Datos restaurados', 'JIJE 2026', '#0D0D0D', '#FFFFFF');
+    }
+
+    // =========================================================================
+    // 12. INICIALIZACIÓN
+    // =========================================================================
+
+    window.onload = function () {
+      checkNewBadges();
+      saveState();
+      updateBottomNavUI();
+      renderCurrentTab();
+      startLiveSimulation();
+    };
+  </script>
+<script>
+  (function() {
+    const STORAGE_KEY = 'jije_active_user';
+    const loginScreen = document.getElementById('jije-login-screen');
+    const loginForm = document.getElementById('jije-login-form');
+    const guestBtn = document.getElementById('jije-guest-btn');
+    const errorMsg = document.getElementById('jije-login-error');
+
+    // Verificar si ya hay sesión iniciada
+    function checkSession() {
+      const savedUser = localStorage.getItem(STORAGE_KEY);
+      if (savedUser) {
+        loginScreen.classList.add('hidden');
+      } else {
+        loginScreen.classList.remove('hidden');
+      }
+    }
+
+    // Guardar usuario y entrar
+    function startSession(userData) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+      loginScreen.classList.add('hidden');
+      
+      // Si tu app tiene una función de toast, la usamos
+      if (typeof showXpToast === 'function') {
+        showXpToast(`¡Hola, ${userData.name}!`);
+      }
+    }
+
+    // Manejar envío del formulario
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('jije-user-name').value.trim();
+      const email = document.getElementById('jije-user-email').value.trim();
+      const pass = document.getElementById('jije-user-pass').value;
+
+      if (pass.length < 4) {
+        errorMsg.textContent = 'La contraseña debe tener al menos 4 caracteres.';
+        errorMsg.classList.remove('hidden');
+        loginForm.classList.add('animate-shake');
+        setTimeout(() => loginForm.classList.remove('animate-shake'), 400);
+        return;
+      }
+
+      errorMsg.classList.add('hidden');
+      startSession({ name, email, role: 'Emprendedor', loggedAt: Date.now() });
+    });
+
+    // Acceso rápido como invitado
+    guestBtn.addEventListener('click', function() {
+      startSession({ name: 'Invitado JIJE', email: 'demo@jije.org', role: 'Invitado', loggedAt: Date.now() });
+    });
+
+    // Función global para cerrar sesión desde tu pestaña "Perfil"
+    window.cerrarSesionJIJE = function() {
+      localStorage.removeItem(STORAGE_KEY);
+      loginForm.reset();
+      loginScreen.classList.remove('hidden');
+    };
+
+    // Obtener datos del usuario actual en cualquier parte de tu código
+    window.getUsuarioJIJE = function() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+    };
+
+    checkSession();
+  })();
+</script>
+
+<!-- INICIO SCRIPT LOGIN JIJE -->
+<script>
+  (function() {
+    const STORAGE_KEY = 'jije_active_user';
+    const loginScreen = document.getElementById('jije-login-screen');
+    const loginForm = document.getElementById('jije-login-form');
+    const guestBtn = document.getElementById('jije-guest-btn');
+    const errorMsg = document.getElementById('jije-login-error');
+
+    function checkSession() {
+      const savedUser = localStorage.getItem(STORAGE_KEY);
+      if (savedUser) {
+        loginScreen.classList.add('hidden');
+      } else {
+        loginScreen.classList.remove('hidden');
+      }
+    }
+
+    function startSession(userData) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+      loginScreen.classList.add('hidden');
+      if (typeof showXpToast === 'function') {
+        showXpToast('¡Hola, ' + userData.name + '!');
+      }
+    }
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('jije-user-name').value.trim();
+      const email = document.getElementById('jije-user-email').value.trim();
+      const pass = document.getElementById('jije-user-pass').value;
+
+      if (pass.length < 4) {
+        errorMsg.textContent = 'La contraseña debe tener al menos 4 caracteres.';
+        errorMsg.classList.remove('hidden');
+        loginForm.classList.add('animate-shake');
+        setTimeout(() => loginForm.classList.remove('animate-shake'), 400);
+        return;
+      }
+
+      errorMsg.classList.add('hidden');
+      startSession({ name: name, email: email, role: 'Emprendedor', loggedAt: Date.now() });
+    });
+
+    guestBtn.addEventListener('click', function() {
+      startSession({ name: 'Invitado JIJE', email: 'demo@jije.org', role: 'Invitado', loggedAt: Date.now() });
+    });
+
+    window.cerrarSesionJIJE = function() {
+      localStorage.removeItem(STORAGE_KEY);
+      loginForm.reset();
+      loginScreen.classList.remove('hidden');
+    };
+
+    window.getUsuarioJIJE = function() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+    };
+
+    checkSession();
+  })();
+</script>
+<!-- FIN SCRIPT LOGIN JIJE -->
+</body>
+</html>
