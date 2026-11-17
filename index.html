@@ -104,50 +104,44 @@
     <p class="text-sm text-ink-muted mb-8">Jornada Internacional de Jóvenes Emprendedores</p>
 
     <!-- Formulario de acceso -->
-    <form id="jije-login-form" class="space-y-4">
-      <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Tu Nombre</label>
-        <input 
-          type="text" 
-          id="jije-user-name" 
-          required 
-          placeholder="Ej. Sofía Martínez"
-          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors"
-        />
-      </div>
+  <form id="jije-login-form" class="space-y-4">
+  <div class="grid grid-cols-2 gap-2">
+    <div>
+      <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1">Nombre</label>
+      <input type="text" id="jije-user-name" required placeholder="Ej. Sofía"
+        class="w-full px-3 py-2.5 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta" />
+    </div>
+    <div>
+      <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1">Apellido</label>
+      <input type="text" id="jije-user-lastname" required placeholder="Ej. Martínez"
+        class="w-full px-3 py-2.5 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta" />
+    </div>
+  </div>
 
-      <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Correo electrónico</label>
-        <input 
-          type="email" 
-          id="jije-user-email" 
-          required 
-          placeholder="emprendedor@ejemplo.com"
-          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors"
-        />
-      </div>
+  <div>
+    <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Correo electrónico</label>
+    <input type="email" id="jije-user-email" required placeholder="emprendedor@ejemplo.com"
+      class="w-full px-3 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta" />
+  </div>
 
-      <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Contraseña</label>
-        <input 
-          type="password" 
-          id="jije-user-pass" 
-          required 
-          minlength="4"
-          placeholder="••••••••"
-          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors"
-        />
-      </div>
+  <div>
+    <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Proyecto o Institución</label>
+    <input type="text" id="jije-user-project" required placeholder="Ej. Kinetix AI Labs / UNL"
+      class="w-full px-3 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta" />
+  </div>
 
-      <p id="jije-login-error" class="hidden text-xs font-bold text-accent-magenta"></p>
+  <div>
+    <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Contraseña</label>
+    <input type="password" id="jije-user-pass" required minlength="4" placeholder="••••••••"
+      class="w-full px-3 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta" />
+  </div>
 
-      <button 
-        type="submit" 
-        class="btn-press w-full py-3.5 rounded-xl bg-ink text-white font-bold text-sm hover:bg-ink-soft transition-colors mt-2"
-      >
-        Ingresar a la Jornada
-      </button>
-    </form>
+  <p id="jije-login-error" class="hidden text-xs font-bold text-accent-magenta"></p>
+
+  <button type="submit" class="btn-press w-full py-3.5 rounded-xl bg-ink text-white font-bold text-sm hover:bg-ink-soft transition-colors mt-2">
+    Ingresar a la Jornada
+  </button>
+</form>
 
     <div class="mt-6 pt-6 border-t border-surface-border text-center">
       <button type="button" id="jije-guest-btn" class="text-xs font-bold text-ink-muted hover:text-ink underline">
@@ -299,51 +293,76 @@
   <div id="app-shell">
 
 <!-- INICIO LOGIN JIJE -->
-<div id="jije-login-screen" class="fixed inset-0 z-50 bg-white flex flex-col justify-center items-center p-6 overflow-y-auto">
-  <div class="w-full max-w-sm animate-pop">
-    <div class="flex items-center gap-2 mb-6">
-      <span class="w-3.5 h-3.5 rounded-full bg-accent-magenta"></span>
-      <span class="w-3.5 h-3.5 rounded-full bg-accent-lime"></span>
-      <span class="w-3.5 h-3.5 rounded-full bg-accent-orange"></span>
-      <span class="w-3.5 h-3.5 rounded-full bg-accent-cyan"></span>
-    </div>
+<script>
+  (function() {
+    const loginScreen = document.getElementById('jije-login-screen');
+    const loginForm = document.getElementById('jije-login-form');
+    const guestBtn = document.getElementById('jije-guest-btn');
+    const errorMsg = document.getElementById('jije-login-error');
 
-    <h1 class="text-3xl font-black text-ink tracking-tight mb-1">Bienvenido a JIJE</h1>
-    <p class="text-sm text-ink-muted mb-8">Jornada Internacional de Jóvenes Emprendedores</p>
+    // Cada vez que se recarga la página, nos aseguramos de mostrar el login
+    function initLoginState() {
+      if (loginScreen) {
+        loginScreen.classList.remove('hidden');
+      }
+    }
 
-    <form id="jije-login-form" class="space-y-4">
-      <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Tu Nombre</label>
-        <input type="text" id="jije-user-name" required placeholder="Ej. Sofía Martínez"
-          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors" />
-      </div>
+    // Al enviar el formulario con los datos del usuario
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('jije-user-name').value.trim();
+      const lastname = document.getElementById('jije-user-lastname') ? document.getElementById('jije-user-lastname').value.trim() : '';
+      const email = document.getElementById('jije-user-email').value.trim();
+      const project = document.getElementById('jije-user-project') ? document.getElementById('jije-user-project').value.trim() : '';
+      const pass = document.getElementById('jije-user-pass').value;
 
-      <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Correo electrónico</label>
-        <input type="email" id="jije-user-email" required placeholder="emprendedor@ejemplo.com"
-          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors" />
-      </div>
+      if (pass.length < 4) {
+        errorMsg.textContent = 'La contraseña debe tener al menos 4 caracteres.';
+        errorMsg.classList.remove('hidden');
+        loginForm.classList.add('animate-shake');
+        setTimeout(() => loginForm.classList.remove('animate-shake'), 400);
+        return;
+      }
 
-      <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-ink-muted mb-1.5">Contraseña</label>
-        <input type="password" id="jije-user-pass" required minlength="4" placeholder="••••••••"
-          class="w-full px-4 py-3 rounded-xl bg-surface-alt border border-surface-border text-ink text-sm focus:outline-none focus:border-accent-magenta transition-colors" />
-      </div>
+      errorMsg.classList.add('hidden');
+      
+      // Actualizamos los datos del usuario en la app (sin guardarlos permanentemente en localStorage)
+      if (typeof appState !== 'undefined') {
+        appState.userName = lastname ? `${name} ${lastname}` : name;
+        if (project) {
+          appState.userHeadline = `${project} · Participante JIJE`;
+        }
+        if (typeof renderCurrentTab === 'function') {
+          renderCurrentTab();
+        }
+      }
 
-      <p id="jije-login-error" class="hidden text-xs font-bold text-accent-magenta"></p>
+      // Ocultamos la pantalla de login temporalmente durante la sesión actual
+      loginScreen.classList.add('hidden');
+    });
 
-      <button type="submit" class="btn-press w-full py-3.5 rounded-xl bg-ink text-white font-bold text-sm hover:bg-ink-soft transition-colors mt-2">
-        Ingresar a la Jornada
-      </button>
-    </form>
+    // Botón de invitado (Modo Demo)
+    guestBtn.addEventListener('click', function() {
+      if (typeof appState !== 'undefined') {
+        appState.userName = 'Sofía Méndez';
+        appState.userHeadline = 'Product Designer & Co-Founder · Explorando startups tech';
+        if (typeof renderCurrentTab === 'function') {
+          renderCurrentTab();
+        }
+      }
+      loginScreen.classList.add('hidden');
+    });
 
-    <div class="mt-6 pt-6 border-t border-surface-border text-center">
-      <button type="button" id="jije-guest-btn" class="text-xs font-bold text-ink-muted hover:text-ink underline">
-        Continuar como invitado (Modo Demo)
-      </button>
-    </div>
-  </div>
-</div>
+    // Función global por si querés agregar un botón de "Cerrar sesión" en el perfil
+    window.cerrarSesionJIJE = function() {
+      loginForm.reset();
+      loginScreen.classList.remove('hidden');
+    };
+
+    // Ejecutar al cargar la página
+    initLoginState();
+  })();
+</script>
 <!-- FIN LOGIN JIJE -->
     <!-- Toast flotante de XP y notificaciones -->
     <div id="xp-toast-container" class="pointer-events-none fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2"></div>
